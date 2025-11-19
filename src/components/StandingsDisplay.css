@@ -1,0 +1,22 @@
+.standings-display {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background-color: #e10600;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  white-space: nowrap;
+}
+
+.standings-label {
+  font-size: 0.85rem;
+  color: #ffffff;
+  font-weight: 500;
+}
+
+.standings-position {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #ffffff;
+  letter-spacing: 0.5px;
+}

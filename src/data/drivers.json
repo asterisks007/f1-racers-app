@@ -1,0 +1,200 @@
+[
+  {
+    "id": "1",
+    "name": "Max Verstappen",
+    "nationality": "Dutch",
+    "team": "Red Bull Racing",
+    "isWorldChampion": true,
+    "championshipYears": [2021, 2022, 2023],
+    "currentStanding": 1,
+    "careerPoints": 2586,
+    "raceWins": 54
+  },
+  {
+    "id": "2",
+    "name": "Sergio Pérez",
+    "nationality": "Mexican",
+    "team": "Red Bull Racing",
+    "isWorldChampion": false,
+    "championshipYears": [],
+    "currentStanding": 2,
+    "careerPoints": 1456,
+    "raceWins": 6
+  },
+  {
+    "id": "3",
+    "name": "Lewis Hamilton",
+    "nationality": "British",
+    "team": "Mercedes",
+    "isWorldChampion": true,
+    "championshipYears": [2008, 2014, 2015, 2017, 2018, 2019, 2020],
+    "currentStanding": 3,
+    "careerPoints": 4538,
+    "raceWins": 103
+  },
+  {
+    "id": "4",
+    "name": "Fernando Alonso",
+    "nationality": "Spanish",
+    "team": "Aston Martin",
+    "isWorldChampion": true,
+    "championshipYears": [2005, 2006],
+    "currentStanding": 4,
+    "careerPoints": 2288,
+    "raceWins": 32
+  },
+  {
+    "id": "5",
+    "name": "Charles Leclerc",
+    "nationality": "Monégasque",
+    "team": "Ferrari",
+    "isWorldChampion": false,
+    "championshipYears": [],
+    "currentStanding": 5,
+    "careerPoints": 1186,
+    "raceWins": 5
+  },
+  {
+    "id": "6",
+    "name": "Lando Norris",
+    "nationality": "British",
+    "team": "McLaren",
+    "isWorldChampion": false,
+    "championshipYears": [],
+    "currentStanding": 6,
+    "careerPoints": 642,
+    "raceWins": 0
+  },
+  {
+    "id": "7",
+    "name": "Carlos Sainz",
+    "nationality": "Spanish",
+    "team": "Ferrari",
+    "isWorldChampion": false,
+    "championshipYears": [],
+    "currentStanding": 7,
+    "careerPoints": 1015,
+    "raceWins": 3
+  },
+  {
+    "id": "8",
+    "name": "George Russell",
+    "nationality": "British",
+    "team": "Mercedes",
+    "isWorldChampion": false,
+    "championshipYears": [],
+    "currentStanding": 8,
+    "careerPoints": 376,
+    "raceWins": 1
+  },
+  {
+    "id": "9",
+    "name": "Oscar Piastri",
+    "nationality": "Australian",
+    "team": "McLaren",
+    "isWorldChampion": false,
+    "championshipYears": [],
+    "currentStanding": 9,
+    "careerPoints": 97,
+    "raceWins": 0
+  },
+  {
+    "id": "10",
+    "name": "Lance Stroll",
+    "nationality": "Canadian",
+    "team": "Aston Martin",
+    "isWorldChampion": false,
+    "championshipYears": [],
+    "currentStanding": 10,
+    "careerPoints": 246,
+    "raceWins": 0
+  },
+  {
+    "id": "11",
+    "name": "Sebastian Vettel",
+    "nationality": "German",
+    "team": "Aston Martin",
+    "isWorldChampion": true,
+    "championshipYears": [2010, 2011, 2012, 2013],
+    "currentStanding": 14,
+    "careerPoints": 3098,
+    "raceWins": 53
+  },
+  {
+    "id": "12",
+    "name": "Michael Schumacher",
+    "nationality": "German",
+    "team": "Ferrari",
+    "isWorldChampion": true,
+    "championshipYears": [1994, 1995, 2000, 2001, 2002, 2003, 2004],
+    "currentStanding": 0,
+    "careerPoints": 1566,
+    "raceWins": 91
+  },
+  {
+    "id": "13",
+    "name": "Ayrton Senna",
+    "nationality": "Brazilian",
+    "team": "Williams",
+    "isWorldChampion": true,
+    "championshipYears": [1988, 1990, 1991],
+    "currentStanding": 0,
+    "careerPoints": 614,
+    "raceWins": 41
+  },
+  {
+    "id": "14",
+    "name": "Alain Prost",
+    "nationality": "French",
+    "team": "Williams",
+    "isWorldChampion": true,
+    "championshipYears": [1985, 1986, 1989, 1993],
+    "currentStanding": 0,
+    "careerPoints": 798,
+    "raceWins": 51
+  },
+  {
+    "id": "15",
+    "name": "Nico Rosberg",
+    "nationality": "German",
+    "team": "Mercedes",
+    "isWorldChampion": true,
+    "championshipYears": [2016],
+    "currentStanding": 0,
+    "careerPoints": 1594,
+    "raceWins": 23
+  },
+  {
+    "id": "16",
+    "name": "Kimi Räikkönen",
+    "nationality": "Finnish",
+    "team": "Alfa Romeo",
+    "isWorldChampion": true,
+    "championshipYears": [2007],
+    "currentStanding": 0,
+    "careerPoints": 1873,
+    "raceWins": 21
+  },
+  {
+    "id": "17",
+    "name": "Jenson Button",
+    "nationality": "British",
+    "team": "McLaren",
+    "isWorldChampion": true,
+    "championshipYears": [2009],
+    "currentStanding": 0,
+    "careerPoints": 1235,
+    "raceWins": 15
+  },
+  {
+    "id": "18",
+    "name": "Mika Häkkinen",
+    "nationality": "Finnish",
+    "team": "McLaren",
+    "isWorldChampion": true,
+    "championshipYears": [1998, 1999],
+    "currentStanding": 0,
+    "careerPoints": 420,
+    "raceWins": 20
+  }
+]

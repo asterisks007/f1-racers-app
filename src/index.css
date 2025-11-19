@@ -1,0 +1,109 @@
+/* F1 Racers App - Global Styles */
+
+:root {
+  /* F1 Color Scheme */
+  --f1-red: #e10600;
+  --f1-dark-red: #a00500;
+  --f1-black: #15151e;
+  --f1-dark-gray: #1a1a1a;
+  --f1-gray: #2d2d2d;
+  --f1-light-gray: #999;
+  --f1-white: #ffffff;
+  --f1-gold: #ffd700;
+  
+  /* Typography */
+  font-family: 'Inter', 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+  line-height: 1.6;
+  font-weight: 400;
+  
+  /* Rendering */
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+  background-color: var(--f1-black);
+  color: var(--f1-white);
+}
+
+h1, h2, h3, h4, h5, h6 {
+  line-height: 1.2;
+  font-weight: 700;
+}
+
+h1 {
+  font-size: 2.5rem;
+}
+
+h2 {
+  font-size: 1.5rem;
+}
+
+p {
+  margin: 0.5rem 0;
+}
+
+a {
+  font-weight: 500;
+  color: var(--f1-red);
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+a:hover {
+  color: var(--f1-dark-red);
+}
+
+button {
+  border-radius: 8px;
+  border: 2px solid var(--f1-red);
+  padding: 0.6em 1.2em;
+  font-size: 1em;
+  font-weight: 600;
+  font-family: inherit;
+  background-color: var(--f1-red);
+  color: var(--f1-white);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+button:hover {
+  background-color: var(--f1-dark-red);
+  border-color: var(--f1-dark-red);
+  transform: translateY(-2px);
+}
+
+button:focus,
+button:focus-visible {
+  outline: 2px solid var(--f1-red);
+  outline-offset: 2px;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--f1-dark-gray);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--f1-red);
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--f1-dark-red);
+}
