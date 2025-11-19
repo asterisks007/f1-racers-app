@@ -1,16 +1,100 @@
-# React + Vite
+# F1 Racers App
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A React application displaying Formula 1 driver standings with champion badges and detailed driver information.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- Display current F1 driver standings
+- Show world champion badges with championship years
+- Filter drivers by championship status
+- Sort drivers by current standing position
+- Responsive card-based layout
 
-## React Compiler
+## Prerequisites
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- Node.js 20.19+ or 22.12+ (required for Vite 7.x)
+- npm 9.5.0 or higher
 
-## Expanding the ESLint configuration
+## Getting Started
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+### 1. Clone the repository
+
+```bash
+git clone https://github.com/asterisks007/f1-racers-app.git
+cd f1-racers-app
+```
+
+### 2. Install dependencies
+
+```bash
+npm install
+```
+
+### 3. Run the development server
+
+```bash
+npm run dev
+```
+
+The app will be available at `http://localhost:5173/`
+
+### 4. Build for production
+
+```bash
+npm run build
+```
+
+The production-ready files will be in the `dist` folder.
+
+### 5. Preview production build
+
+```bash
+npm run preview
+```
+
+## Available Scripts
+
+- `npm run dev` - Start development server
+- `npm run build` - Build for production
+- `npm run preview` - Preview production build
+- `npm run lint` - Run ESLint
+- `npm run test` - Run tests with Vitest
+
+## Project Structure
+
+```
+f1-racers-app/
+├── src/
+│   ├── components/       # React components
+│   │   ├── ChampionBadge.jsx
+│   │   ├── DriverCard.jsx
+│   │   ├── DriverList.jsx
+│   │   └── StandingsDisplay.jsx
+│   ├── services/         # Business logic
+│   │   └── driverService.js
+│   ├── data/            # Static data
+│   │   └── drivers.json
+│   ├── test/            # Test setup
+│   │   └── setup.js
+│   ├── App.jsx
+│   └── main.jsx
+├── specs/               # Project documentation
+│   ├── requirements.md
+│   ├── design.md
+│   └── tasks.md
+└── package.json
+```
+
+## Technologies Used
+
+- React 19.2.0
+- Vite 7.2.2
+- Vitest (testing)
+- @testing-library/react (component testing)
+
+## Documentation
+
+See the `specs/` folder for detailed project documentation:
+- `requirements.md` - Feature requirements and user stories
+- `design.md` - Architecture and design decisions
+- `tasks.md` - Implementation task list
