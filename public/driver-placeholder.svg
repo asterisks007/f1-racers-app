@@ -1,0 +1,71 @@
+<svg width="440" height="440" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0f0f0f;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#1a1a1a;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="capGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#e10600;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#a00500;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="suitGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#2a2a2a;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#1a1a1a;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="440" height="440" fill="url(#bg)"/>
+  
+  <!-- Racing suit body -->
+  <ellipse cx="220" cy="380" rx="100" ry="80" fill="url(#suitGrad)"/>
+  <path d="M 220 300 Q 200 320 180 360 L 180 440 L 260 440 L 260 360 Q 240 320 220 300 Z" fill="url(#suitGrad)"/>
+  
+  <!-- Shoulders -->
+  <ellipse cx="160" cy="310" rx="35" ry="45" fill="#1a1a1a"/>
+  <ellipse cx="280" cy="310" rx="35" ry="45" fill="#1a1a1a"/>
+  
+  <!-- Racing suit details -->
+  <rect x="205" y="320" width="30" height="80" fill="#e10600" opacity="0.3"/>
+  <circle cx="200" cy="330" r="8" fill="#fff" opacity="0.8"/>
+  <circle cx="240" cy="330" r="8" fill="#fff" opacity="0.8"/>
+  
+  <!-- Neck -->
+  <rect x="200" y="240" width="40" height="30" fill="#d4a574" rx="5"/>
+  
+  <!-- Head -->
+  <ellipse cx="220" cy="200" rx="55" ry="65" fill="#d4a574"/>
+  
+  <!-- Ears -->
+  <ellipse cx="165" cy="200" rx="12" ry="18" fill="#c99563"/>
+  <ellipse cx="275" cy="200" rx="12" ry="18" fill="#c99563"/>
+  
+  <!-- Racing cap -->
+  <!-- Cap bill/visor -->
+  <ellipse cx="220" cy="165" rx="75" ry="15" fill="#000" opacity="0.6"/>
+  <path d="M 145 165 Q 145 155 155 155 L 285 155 Q 295 155 295 165 L 285 170 L 155 170 Z" fill="url(#capGrad)"/>
+  
+  <!-- Cap crown -->
+  <ellipse cx="220" cy="145" rx="60" ry="35" fill="url(#capGrad)"/>
+  <path d="M 160 145 Q 160 120 220 115 Q 280 120 280 145 Z" fill="url(#capGrad)"/>
+  
+  <!-- Cap details -->
+  <ellipse cx="220" cy="135" rx="25" ry="15" fill="#fff" opacity="0.2"/>
+  <circle cx="220" cy="140" r="8" fill="#fff" opacity="0.9"/>
+  
+  <!-- Face features -->
+  <!-- Eyes -->
+  <ellipse cx="200" cy="195" rx="8" ry="10" fill="#2a2a2a"/>
+  <ellipse cx="240" cy="195" rx="8" ry="10" fill="#2a2a2a"/>
+  <circle cx="202" cy="193" r="3" fill="#fff"/>
+  <circle cx="242" cy="193" r="3" fill="#fff"/>
+  
+  <!-- Nose -->
+  <path d="M 220 200 L 218 215 Q 220 218 222 215 Z" fill="#c99563"/>
+  
+  <!-- Mouth -->
+  <path d="M 210 225 Q 220 230 230 225" stroke="#8b6f47" stroke-width="2" fill="none" stroke-linecap="round"/>
+  
+  <!-- Text -->
+  <text x="220" y="420" font-family="Arial, sans-serif" font-size="20" fill="#e10600" text-anchor="middle" font-weight="bold" opacity="0.7">F1 DRIVER</text>
+</svg>

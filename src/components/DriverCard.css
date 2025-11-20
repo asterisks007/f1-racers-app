@@ -1,52 +1,247 @@
 .driver-card {
-  background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+  background: linear-gradient(145deg, #1a1a1a 0%, #2d2d2d 50%, #1a1a1a 100%);
   border: 2px solid #e10600;
   border-radius: 12px;
-  padding: 1.5rem;
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+  padding: 1rem;
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4), 
+              0 0 0 1px rgba(225, 6, 0, 0.1) inset;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+  height: auto;
+  min-height: 260px;
+}
+
+.driver-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(225, 6, 0, 0.1), transparent);
+  transition: left 0.5s ease;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.driver-card:hover::before {
+  left: 100%;
 }
 
 .driver-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 8px 16px rgba(225, 6, 0, 0.4);
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 0 16px 32px rgba(225, 6, 0, 0.3),
+              0 0 40px rgba(225, 6, 0, 0.2),
+              0 0 0 2px rgba(225, 6, 0, 0.3) inset;
   border-color: #ff1e00;
+  min-height: 400px;
 }
 
-.driver-header {
+/* Compact View - Always Visible */
+.driver-compact-view {
   display: flex;
-  justify-content: space-between;
+  flex-direction: column;
   align-items: center;
-  margin-bottom: 1rem;
-  padding-bottom: 1rem;
-  border-bottom: 1px solid #444;
+  gap: 0.75rem;
+  position: relative;
+  z-index: 2;
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.driver-image-container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  position: relative;
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.driver-image-container::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 120px;
+  height: 120px;
+  border-radius: 12px;
+  background: linear-gradient(45deg, #e10600, #ff1e00, #e10600);
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  z-index: -1;
+  filter: blur(15px);
+}
+
+.driver-card:hover .driver-image-container::after {
+  opacity: 0.6;
+}
+
+.driver-image {
+  width: 110px;
+  height: 110px;
+  object-fit: cover;
+  border-radius: 10px;
+  border: 2px solid #333;
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+  position: relative;
+  z-index: 1;
+}
+
+.driver-card:hover .driver-image {
+  border-color: #e10600;
+  box-shadow: 0 8px 24px rgba(225, 6, 0, 0.4);
 }
 
 .driver-name {
-  font-size: 1.5rem;
+  font-size: 1.1rem;
   font-weight: 700;
   color: #ffffff;
   margin: 0;
-  text-align: left;
+  text-align: center;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+  letter-spacing: 0.5px;
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  z-index: 2;
+}
+
+.driver-card:hover .driver-name {
+  color: #ff1e00;
+  font-size: 1.25rem;
+}
+
+.standings-wrapper {
+  display: flex;
+  justify-content: center;
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  z-index: 2;
+}
+
+/* Expanded View - Visible on Hover */
+.driver-expanded-view {
+  position: relative;
+  z-index: 2;
+  opacity: 0;
+  max-height: 0;
+  overflow: hidden;
+  transform: translateY(-20px);
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  margin-top: 0;
+}
+
+.driver-card:hover .driver-expanded-view {
+  opacity: 1;
+  max-height: 300px;
+  transform: translateY(0);
+  margin-top: 1rem;
 }
 
 .driver-details {
-  margin: 1rem 0;
+  background: rgba(0, 0, 0, 0.3);
+  padding: 0.75rem;
+  border-radius: 8px;
+  border-left: 3px solid #e10600;
+  margin-bottom: 0.75rem;
 }
 
 .driver-info {
   display: flex;
   justify-content: space-between;
   margin: 0.5rem 0;
-  font-size: 0.95rem;
+  font-size: 0.85rem;
+  padding: 0.4rem 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  transition: all 0.3s ease;
+}
+
+.driver-info:last-child {
+  border-bottom: none;
+  margin-bottom: 0;
+}
+
+.driver-info:hover {
+  padding-left: 0.5rem;
+  background: rgba(225, 6, 0, 0.05);
 }
 
 .info-label {
   color: #999;
   font-weight: 500;
+  text-transform: uppercase;
+  font-size: 0.75rem;
+  letter-spacing: 0.5px;
 }
 
 .info-value {
   color: #ffffff;
   font-weight: 600;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+/* Responsive sizing */
+@media (max-width: 768px) {
+  .driver-image {
+    width: 100px;
+    height: 100px;
+  }
+  
+  .driver-image-container::after {
+    width: 110px;
+    height: 110px;
+  }
+  
+  .driver-name {
+    font-size: 1rem;
+  }
+  
+  .driver-card:hover .driver-name {
+    font-size: 1.15rem;
+  }
+  
+  .driver-card {
+    min-height: 240px;
+    padding: 0.75rem;
+  }
+  
+  .driver-card:hover {
+    min-height: 380px;
+  }
+}
+
+@media (max-width: 480px) {
+  .driver-image {
+    width: 90px;
+    height: 90px;
+  }
+  
+  .driver-image-container::after {
+    width: 100px;
+    height: 100px;
+  }
+  
+  .driver-name {
+    font-size: 0.95rem;
+  }
+  
+  .driver-card:hover .driver-name {
+    font-size: 1.1rem;
+  }
+  
+  .driver-card {
+    min-height: 220px;
+    padding: 0.75rem;
+  }
+  
+  .driver-card:hover {
+    min-height: 360px;
+  }
+  
+  .driver-info {
+    font-size: 0.8rem;
+  }
 }

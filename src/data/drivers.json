@@ -8,7 +8,8 @@
     "championshipYears": [2021, 2022, 2023],
     "currentStanding": 1,
     "careerPoints": 2586,
-    "raceWins": 54
+    "raceWins": 54,
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/64/Max_Verstappen_2023.jpg/440px-Max_Verstappen_2023.jpg"
   },
   {
     "id": "2",
@@ -19,7 +20,8 @@
     "championshipYears": [],
     "currentStanding": 2,
     "careerPoints": 1456,
-    "raceWins": 6
+    "raceWins": 6,
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bb/Sergio_P%C3%A9rez_2023.jpg/440px-Sergio_P%C3%A9rez_2023.jpg"
   },
   {
     "id": "3",
@@ -30,7 +32,8 @@
     "championshipYears": [2008, 2014, 2015, 2017, 2018, 2019, 2020],
     "currentStanding": 3,
     "careerPoints": 4538,
-    "raceWins": 103
+    "raceWins": 103,
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/18/Lewis_Hamilton_2016_Malaysia_2.jpg/440px-Lewis_Hamilton_2016_Malaysia_2.jpg"
   },
   {
     "id": "4",
@@ -41,7 +44,8 @@
     "championshipYears": [2005, 2006],
     "currentStanding": 4,
     "careerPoints": 2288,
-    "raceWins": 32
+    "raceWins": 32,
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2b/Alonso_2016.jpg/440px-Alonso_2016.jpg"
   },
   {
     "id": "5",
@@ -52,7 +56,8 @@
     "championshipYears": [],
     "currentStanding": 5,
     "careerPoints": 1186,
-    "raceWins": 5
+    "raceWins": 5,
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/18/Charles_Leclerc_in_2023.jpg/440px-Charles_Leclerc_in_2023.jpg"
   },
   {
     "id": "6",
@@ -63,7 +68,8 @@
     "championshipYears": [],
     "currentStanding": 6,
     "careerPoints": 642,
-    "raceWins": 0
+    "raceWins": 0,
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e8/Lando_Norris_2023.jpg/440px-Lando_Norris_2023.jpg"
   },
   {
     "id": "7",
@@ -74,7 +80,8 @@
     "championshipYears": [],
     "currentStanding": 7,
     "careerPoints": 1015,
-    "raceWins": 3
+    "raceWins": 3,
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/99/Carlos_Sainz_Jr._2023.jpg/440px-Carlos_Sainz_Jr._2023.jpg"
   },
   {
     "id": "8",
@@ -85,7 +92,8 @@
     "championshipYears": [],
     "currentStanding": 8,
     "careerPoints": 376,
-    "raceWins": 1
+    "raceWins": 1,
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/99/George_Russell_2023.jpg/440px-George_Russell_2023.jpg"
   },
   {
     "id": "9",
@@ -96,7 +104,8 @@
     "championshipYears": [],
     "currentStanding": 9,
     "careerPoints": 97,
-    "raceWins": 0
+    "raceWins": 0,
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/66/Oscar_Piastri_2023.jpg/440px-Oscar_Piastri_2023.jpg"
   },
   {
     "id": "10",
@@ -107,7 +116,8 @@
     "championshipYears": [],
     "currentStanding": 10,
     "careerPoints": 246,
-    "raceWins": 0
+    "raceWins": 0,
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c4/Lance_Stroll_2023.jpg/440px-Lance_Stroll_2023.jpg"
   },
   {
     "id": "11",
@@ -118,7 +128,8 @@
     "championshipYears": [2010, 2011, 2012, 2013],
     "currentStanding": 14,
     "careerPoints": 3098,
-    "raceWins": 53
+    "raceWins": 53,
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/86/Sebastian_Vettel_2015_Malaysia_podium_1.jpg/440px-Sebastian_Vettel_2015_Malaysia_podium_1.jpg"
   },
   {
     "id": "12",
@@ -129,7 +140,8 @@
     "championshipYears": [1994, 1995, 2000, 2001, 2002, 2003, 2004],
     "currentStanding": 0,
     "careerPoints": 1566,
-    "raceWins": 91
+    "raceWins": 91,
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4c/Michael_Schumacher_2012.jpg/440px-Michael_Schumacher_2012.jpg"
   },
   {
     "id": "13",
@@ -140,7 +152,8 @@
     "championshipYears": [1988, 1990, 1991],
     "currentStanding": 0,
     "careerPoints": 614,
-    "raceWins": 41
+    "raceWins": 41,
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e6/Ayrton_Senna_8_%28cropped%29.jpg/440px-Ayrton_Senna_8_%28cropped%29.jpg"
   },
   {
     "id": "14",
@@ -151,7 +164,8 @@
     "championshipYears": [1985, 1986, 1989, 1993],
     "currentStanding": 0,
     "careerPoints": 798,
-    "raceWins": 51
+    "raceWins": 51,
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d9/Alain_Prost_1993.jpg/440px-Alain_Prost_1993.jpg"
   },
   {
     "id": "15",
@@ -162,7 +176,8 @@
     "championshipYears": [2016],
     "currentStanding": 0,
     "careerPoints": 1594,
-    "raceWins": 23
+    "raceWins": 23,
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c7/Nico_Rosberg_2016.jpg/440px-Nico_Rosberg_2016.jpg"
   },
   {
     "id": "16",
@@ -173,7 +188,8 @@
     "championshipYears": [2007],
     "currentStanding": 0,
     "careerPoints": 1873,
-    "raceWins": 21
+    "raceWins": 21,
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c7/Kimi_Raikkonen_2016.jpg/440px-Kimi_Raikkonen_2016.jpg"
   },
   {
     "id": "17",
@@ -184,7 +200,8 @@
     "championshipYears": [2009],
     "currentStanding": 0,
     "careerPoints": 1235,
-    "raceWins": 15
+    "raceWins": 15,
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/18/Jenson_Button_2016.jpg/440px-Jenson_Button_2016.jpg"
   },
   {
     "id": "18",
@@ -195,6 +212,7 @@
     "championshipYears": [1998, 1999],
     "currentStanding": 0,
     "careerPoints": 420,
-    "raceWins": 20
+    "raceWins": 20,
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8f/Mika_H%C3%A4kkinen_2016.jpg/440px-Mika_H%C3%A4kkinen_2016.jpg"
   }
 ]

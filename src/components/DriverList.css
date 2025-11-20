@@ -1,6 +1,6 @@
 .driver-list {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  grid-template-columns: repeat(4, 1fr);
   gap: 1.5rem;
   padding: 1rem 0;
 }
@@ -39,5 +39,11 @@
 @media (min-width: 769px) and (max-width: 1024px) {
   .driver-list {
     grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1025px) and (max-width: 1400px) {
+  .driver-list {
+    grid-template-columns: repeat(3, 1fr);
   }
 }
