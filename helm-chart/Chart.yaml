@@ -1,0 +1,6 @@
+apiVersion: v2
+name: f1-racers-app
+description: A Helm chart for F1 Racers single-page application
+type: application
+version: 0.1.0
+appVersion: "1.0.0"

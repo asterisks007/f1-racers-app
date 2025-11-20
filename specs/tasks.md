@@ -170,13 +170,120 @@
     - _Requirements: 5.1, 5.2, 5.4_
 
 - [x] 7. Write component tests
-
-
-
-
-
-
   - Write tests for searchDrivers function in driverService
   - Write tests for SearchBox component interactions
   - Write tests for DriverList filtering with search query
   - _Requirements: 5.2_
+
+- [x] 8. Create Docker configuration
+
+
+
+
+
+  - [x] 8.1 Create Dockerfile with multi-stage build
+
+
+    - Create Dockerfile in project root
+    - Implement build stage using node:18-alpine base image
+    - Copy package files and run npm ci for dependency installation
+    - Copy source files and run npm run build
+    - Implement production stage using nginx:alpine base image
+    - Copy built assets from build stage to nginx html directory
+    - Expose port 80 as default
+    - Configure nginx to serve the single-page application correctly
+    - _Requirements: 6.1_
+  
+  - [x] 8.2 Create .dockerignore file
+
+
+    - Create .dockerignore in project root
+    - Add node_modules, dist, .git, and other unnecessary files to exclude from Docker context
+    - Optimize Docker build performance by reducing context size
+    - _Requirements: 6.1_
+  
+  - [x] 8.3 Test Docker image locally
+
+
+
+
+
+
+
+    - Build Docker image using docker build command
+    - Run container locally and verify application serves correctly
+    - Test port mapping and accessibility
+    - _Requirements: 6.1, 6.4_
+
+- [x] 9. Create Helm Chart for Kubernetes deployment
+
+
+
+
+
+
+  - [x] 9.1 Initialize Helm chart structure
+
+    - Create helm-chart directory in project root
+    - Create Chart.yaml with chart metadata (name, version, description)
+    - Create values.yaml with default configuration values
+    - Create templates directory for Kubernetes manifests
+    - _Requirements: 6.2_
+  
+  - [x] 9.2 Create Kubernetes deployment template
+
+
+    - Create templates/deployment.yaml
+    - Define Deployment resource with configurable replicas
+    - Configure container spec with image from values
+    - Add configurable port from values.yaml
+    - Implement liveness and readiness probes for health checks
+    - Set resource limits and requests from values
+    - _Requirements: 6.2, 6.3_
+  
+  - [x] 9.3 Create Kubernetes service template
+
+
+    - Create templates/service.yaml
+    - Define Service resource to expose the application
+    - Configure service type (ClusterIP, NodePort, LoadBalancer) from values
+    - Map service port to container port with configurability
+    - Add selectors to match deployment pods
+    - _Requirements: 6.2, 6.3, 6.4_
+  
+  - [x] 9.4 Create optional ingress template
+
+
+    - Create templates/ingress.yaml
+    - Add conditional rendering based on ingress.enabled value
+    - Configure ingress rules for hostname-based routing
+    - Add annotations for ingress controller configuration
+    - Support TLS configuration if needed
+    - _Requirements: 6.4_
+  
+  - [x] 9.5 Configure values.yaml with all parameters
+
+
+    - Define image repository and tag parameters
+    - Set default service port to 80 with easy modification capability
+    - Configure service type with default ClusterIP
+    - Set default replica count
+    - Define resource limits and requests
+    - Add ingress configuration options (enabled: false by default)
+    - Document all configurable values with comments
+    - _Requirements: 6.2, 6.3_
+
+- [x] 10. Create deployment documentation
+
+
+
+
+
+
+  - Create DEPLOYMENT.md file in project root
+  - Document Docker build and run commands
+  - Document Helm installation and upgrade commands
+  - Provide examples for different deployment scenarios (local, cloud)
+  - Document how to access the application after deployment
+  - Include troubleshooting tips for common deployment issues
+  - _Requirements: 6.1, 6.2, 6.4_

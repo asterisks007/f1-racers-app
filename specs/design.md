@@ -161,6 +161,67 @@ export const searchDrivers = (drivers, searchQuery) => {
 - Display timeout message if request takes too long
 - Implement graceful degradation
 
+## Containerization and Deployment
+
+### Docker Configuration
+
+**Dockerfile Strategy**:
+- Use multi-stage build to optimize image size
+- Stage 1: Build stage using Node.js image to compile the application
+- Stage 2: Production stage using lightweight nginx image to serve static files
+- Copy built assets from build stage to nginx html directory
+- Expose port 80 by default (configurable via environment variables)
+
+**Docker Image Structure**:
+```
+FROM node:18-alpine AS build
+WORKDIR /app
+COPY package*.json ./
+RUN npm ci
+COPY . .
+RUN npm run build
+
+FROM nginx:alpine
+COPY --from=build /app/dist /usr/share/nginx/html
+EXPOSE 80
+CMD ["nginx", "-g", "daemon off;"]
+```
+
+### Kubernetes Deployment
+
+**Helm Chart Structure**:
+```
+helm-chart/
+├── Chart.yaml
+├── values.yaml
+├── templates/
+│   ├── deployment.yaml
+│   ├── service.yaml
+│   └── ingress.yaml (optional)
+```
+
+**Key Configuration Options** (values.yaml):
+- `image.repository`: Docker image repository
+- `image.tag`: Image version tag
+- `service.port`: Configurable application port (default: 80)
+- `service.type`: Service type (ClusterIP, NodePort, LoadBalancer)
+- `replicaCount`: Number of pod replicas
+- `resources`: CPU and memory limits/requests
+- `ingress.enabled`: Enable/disable ingress
+- `ingress.hosts`: Hostname configuration for external access
+
+**Deployment Considerations**:
+- Use ConfigMap for nginx configuration if custom settings needed
+- Implement health checks (liveness and readiness probes)
+- Set appropriate resource limits to prevent resource exhaustion
+- Use rolling update strategy for zero-downtime deployments
+
+**URL Access**:
+- ClusterIP: Internal cluster access only
+- NodePort: Access via `<NodeIP>:<NodePort>`
+- LoadBalancer: Access via external load balancer IP
+- Ingress: Access via configured domain name
+
 ## Testing Strategy
 
 ### Unit Tests
@@ -174,8 +235,15 @@ export const searchDrivers = (drivers, searchQuery) => {
 - Test user interactions (if filtering/sorting added)
 - Test error handling scenarios
 
+### Container Testing
+- Verify Docker image builds successfully
+- Test container runs and serves application correctly
+- Validate port configuration works as expected
+- Test Helm chart installation and upgrades
+
 ### Manual Testing
 - Verify responsive design on different screen sizes
 - Check visual appearance of champion badges
 - Validate data accuracy against known F1 records
 - Test loading states and error messages
+- Verify application accessibility via configured URL after deployment

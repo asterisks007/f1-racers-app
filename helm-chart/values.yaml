@@ -1,0 +1,64 @@
+# Default values for f1-racers-app
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+# Number of replicas for the deployment
+# Increase this value for high availability
+replicaCount: 1
+
+image:
+  # Docker image repository
+  # Example: myregistry.azurecr.io/f1-racers-app
+  repository: f1-racers-app
+  # Image pull policy
+  # Options: Always, IfNotPresent, Never
+  pullPolicy: IfNotPresent
+  # Image tag to deploy
+  # Overrides the image tag whose default is the chart appVersion
+  tag: ""
+
+service:
+  # Service type
+  # Options: ClusterIP (internal only), NodePort (accessible via node IP), LoadBalancer (external load balancer)
+  type: ClusterIP
+  # Service port - the port on which the application will be accessible
+  # Default: 80 (can be easily modified to any port)
+  port: 80
+
+ingress:
+  # Enable ingress for external access via hostname
+  # Set to true to create an Ingress resource
+  enabled: false
+  # Ingress class name (e.g., nginx, traefik)
+  className: ""
+  # Annotations for ingress controller configuration
+  # Example for nginx:
+  # annotations:
+  #   nginx.ingress.kubernetes.io/rewrite-target: /
+  #   cert-manager.io/cluster-issuer: letsencrypt-prod
+  annotations: {}
+  # Ingress hosts configuration
+  hosts:
+    - host: f1-racers.local
+      paths:
+        - path: /
+          pathType: Prefix
+  # TLS configuration for HTTPS
+  # Example:
+  # tls:
+  #   - secretName: f1-racers-tls
+  #     hosts:
+  #       - f1-racers.example.com
+  tls: []
+
+# Resource limits and requests for the container
+# Recommended to set these values for production deployments
+# Example:
+# resources:
+#   limits:
+#     cpu: 100m
+#     memory: 128Mi
+#   requests:
+#     cpu: 50m
+#     memory: 64Mi
+resources: {}

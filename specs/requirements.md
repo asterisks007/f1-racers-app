@@ -66,3 +66,14 @@ This document defines the requirements for a single-page application that displa
 2. WHEN a user enters text into the search box, THE F1 Racers App SHALL filter the driver list to show only drivers whose names match the search text
 3. THE F1 Racers App SHALL perform search matching against any part of the driver name (beginning, middle, or end)
 4. WHEN the search box is empty, THE F1 Racers App SHALL display all drivers in the list
+
+### Requirement 6
+
+**User Story:** As a DevOps engineer, I want to containerize and deploy the application, so that it can run consistently across different environments
+
+#### Acceptance Criteria
+
+1. THE F1 Racers App SHALL include a Dockerfile that defines the container image build process
+2. THE F1 Racers App SHALL be deployable to a Kubernetes cluster using Helm Charts
+3. WHERE the application is deployed via Helm, THE F1 Racers App SHALL allow the application port to be configured through Helm values
+4. WHEN the application is running in a container or cluster, THE F1 Racers App SHALL expose an accessible URL endpoint
