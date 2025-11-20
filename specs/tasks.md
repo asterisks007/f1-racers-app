@@ -18,7 +18,8 @@
     - Write getDrivers function to fetch driver data from drivers.json
     - Implement sortDriversByStanding utility function
     - Implement filterChampions utility function
-    - _Requirements: 1.2, 2.1_
+    - Implement searchDrivers utility function for filtering by name
+    - _Requirements: 1.2, 2.1, 5.2, 5.3_
 
 - [x] 3. Build core UI components
 
@@ -66,7 +67,8 @@
     - Add error state handling with error message display
     - Render DriverCard components for each driver in the list
     - Handle missing or incomplete driver data gracefully
-    - _Requirements: 1.1, 1.2, 2.1_
+    - Accept searchQuery prop and filter drivers accordingly
+    - _Requirements: 1.1, 1.2, 2.1, 5.2, 5.4_
   
   - [x] 4.2 Update App.jsx as main entry point
 
@@ -110,14 +112,71 @@
     - Ensure consistent spacing throughout the app
     - _Requirements: 2.3, 3.3_
 
-- [ ] 6. Write component tests
+- [x] 6. Implement search functionality
+
+
+
+
+  - [x] 6.1 Add searchDrivers function to driverService
+
+
+    - Implement searchDrivers function in src/services/driverService.js
+    - Function should accept drivers array and searchQuery string
+    - Perform case-insensitive partial matching against driver names
+    - Return filtered array of drivers matching the search query
+    - _Requirements: 5.2, 5.3_
+  
+
+
+  - [x] 6.2 Create SearchBox component
 
 
 
 
 
-  - Write tests for driverService functions
-  - Write tests for DriverCard rendering
-  - Write tests for ChampionBadge display logic
-  - Write tests for StandingsDisplay formatting
-  - _Requirements: 1.1, 2.1, 3.1, 3.2_
+    - Create SearchBox.jsx in src/components/
+    - Implement controlled input component with onChange handler
+    - Add placeholder text "Search drivers..." for user guidance
+    - Style search box to match F1 theme with component CSS file
+
+
+    - _Requirements: 5.1, 5.2_
+  
+  - [x] 6.3 Update DriverList to accept searchQuery prop
+
+
+
+
+
+    - Modify DriverList component to accept searchQuery prop
+    - Import and use searchDrivers function from driverService
+
+
+    - Filter drivers based on searchQuery before rendering
+    - Ensure all drivers display when searchQuery is empty
+    - _Requirements: 5.2, 5.3, 5.4_
+  
+  - [x] 6.4 Integrate search into App.jsx
+
+
+
+
+
+    - Add search state management in App.jsx using useState
+    - Import and integrate SearchBox component in header section
+    - Position SearchBox in top right corner of header using CSS
+    - Pass search query state to DriverList component
+    - Ensure search updates filter drivers in real-time
+    - _Requirements: 5.1, 5.2, 5.4_
+
+- [x] 7. Write component tests
+
+
+
+
+
+
+  - Write tests for searchDrivers function in driverService
+  - Write tests for SearchBox component interactions
+  - Write tests for DriverList filtering with search query
+  - _Requirements: 5.2_

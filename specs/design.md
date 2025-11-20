@@ -17,6 +17,7 @@ The F1 Racers App is a single-page application that displays information about F
 ```
 src/
 ├── components/
+│   ├── SearchBox.jsx
 │   ├── DriverList.jsx
 │   ├── DriverCard.jsx
 │   ├── ChampionBadge.jsx
@@ -31,10 +32,24 @@ src/
 
 ## Components and Interfaces
 
+### SearchBox Component
+**Purpose**: Provide search functionality to filter drivers
+
+**Props**:
+- `onSearchChange`: Function callback to handle search input changes
+
+**State**: None (controlled component)
+
+**Responsibilities**:
+- Display search input field in top right corner
+- Emit search text changes to parent component
+- Provide clear/reset functionality
+
 ### DriverList Component
 **Purpose**: Main container component that fetches and displays the list of drivers
 
-**Props**: None (manages its own state)
+**Props**: 
+- `searchQuery`: String for filtering drivers (optional)
 
 **State**:
 - `drivers`: Array of driver objects
@@ -43,6 +58,7 @@ src/
 
 **Responsibilities**:
 - Fetch driver data on component mount
+- Filter drivers based on search query
 - Render DriverCard components for each driver
 - Handle loading and error states
 
@@ -120,6 +136,11 @@ export const sortDriversByStanding = (drivers) => {
 export const filterChampions = (drivers) => {
   // Returns Driver[]
   // Filters only world champions
+}
+
+export const searchDrivers = (drivers, searchQuery) => {
+  // Returns Driver[]
+  // Filters drivers by name matching search query (case-insensitive, partial match)
 }
 ```
 

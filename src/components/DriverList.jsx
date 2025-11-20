@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react';
-import { getDrivers } from '../services/driverService';
+import { getDrivers, searchDrivers } from '../services/driverService';
 import DriverCard from './DriverCard';
 import './DriverList.css';
 
-const DriverList = () => {
+const DriverList = ({ searchQuery = '' }) => {
   const [drivers, setDrivers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -38,9 +38,16 @@ const DriverList = () => {
     return <div className="no-data-message">No driver data available.</div>;
   }
 
+  // Filter drivers based on search query
+  const filteredDrivers = searchDrivers(drivers, searchQuery);
+
+  if (filteredDrivers.length === 0) {
+    return <div className="no-data-message">No drivers found matching your search.</div>;
+  }
+
   return (
     <div className="driver-list">
-      {drivers.map((driver) => {
+      {filteredDrivers.map((driver) => {
         // Handle missing or incomplete driver data gracefully
         if (!driver || !driver.id) {
           return null;

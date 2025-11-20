@@ -54,3 +54,15 @@ This document defines the requirements for a single-page application that displa
 1. THE F1 Racers App SHALL operate as a single-page application without full page reloads
 2. THE F1 Racers App SHALL update content dynamically within the same page
 3. THE F1 Racers App SHALL maintain application state without requiring navigation to different URLs
+
+
+### Requirement 5
+
+**User Story:** As a user, I want to search for specific drivers using a search box, so that I can quickly find information about drivers I'm interested in
+
+#### Acceptance Criteria
+
+1. THE F1 Racers App SHALL display a search box in the top right corner of the interface
+2. WHEN a user enters text into the search box, THE F1 Racers App SHALL filter the driver list to show only drivers whose names match the search text
+3. THE F1 Racers App SHALL perform search matching against any part of the driver name (beginning, middle, or end)
+4. WHEN the search box is empty, THE F1 Racers App SHALL display all drivers in the list

@@ -12,11 +12,13 @@
 .app-header {
   background: linear-gradient(135deg, #e10600 0%, #a00500 100%);
   padding: 2rem;
-  text-align: center;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
   position: sticky;
   top: 0;
   z-index: 100;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .app-header h1 {
@@ -41,6 +43,8 @@
 @media (max-width: 768px) {
   .app-header {
     padding: 1.5rem 1rem;
+    flex-direction: column;
+    gap: 1rem;
   }
 
   .app-header h1 {

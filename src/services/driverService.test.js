@@ -1,35 +1,32 @@
 import { describe, it, expect } from 'vitest';
-import { sortDriversByStanding, filterChampions } from './driverService';
+import { searchDrivers } from './driverService';
 
-describe('driverService', () => {
-  describe('sortDriversByStanding', () => {
-    it('should sort drivers by standing position', () => {
-      const drivers = [
-        { name: 'Driver A', currentStanding: 3 },
-        { name: 'Driver B', currentStanding: 1 },
-        { name: 'Driver C', currentStanding: 2 },
-      ];
+describe('searchDrivers', () => {
+  const mockDrivers = [
+    { id: '1', name: 'Lewis Hamilton' },
+    { id: '2', name: 'Max Verstappen' },
+    { id: '3', name: 'Fernando Alonso' }
+  ];
 
-      const sorted = sortDriversByStanding(drivers);
-
-      expect(sorted[0].currentStanding).toBe(1);
-      expect(sorted[1].currentStanding).toBe(2);
-      expect(sorted[2].currentStanding).toBe(3);
-    });
+  it('returns all drivers when search query is empty', () => {
+    const result = searchDrivers(mockDrivers, '');
+    expect(result).toEqual(mockDrivers);
   });
 
-  describe('filterChampions', () => {
-    it('should return only world champions', () => {
-      const drivers = [
-        { name: 'Champion 1', isWorldChampion: true },
-        { name: 'Non-Champion', isWorldChampion: false },
-        { name: 'Champion 2', isWorldChampion: true },
-      ];
+  it('filters drivers by name with case-insensitive matching', () => {
+    const result = searchDrivers(mockDrivers, 'lewis');
+    expect(result).toHaveLength(1);
+    expect(result[0].name).toBe('Lewis Hamilton');
+  });
 
-      const champions = filterChampions(drivers);
+  it('matches partial names', () => {
+    const result = searchDrivers(mockDrivers, 'ver');
+    expect(result).toHaveLength(1);
+    expect(result[0].name).toBe('Max Verstappen');
+  });
 
-      expect(champions).toHaveLength(2);
-      expect(champions.every(d => d.isWorldChampion)).toBe(true);
-    });
+  it('returns empty array when no matches found', () => {
+    const result = searchDrivers(mockDrivers, 'xyz');
+    expect(result).toHaveLength(0);
   });
 });

@@ -57,3 +57,30 @@ export const filterChampions = (drivers) => {
   
   return drivers.filter(driver => driver.isWorldChampion === true);
 };
+
+/**
+ * Searches drivers by name with case-insensitive partial matching
+ * @param {Array} drivers - Array of driver objects
+ * @param {string} searchQuery - Search text to match against driver names
+ * @returns {Array} Array of drivers whose names match the search query
+ */
+export const searchDrivers = (drivers, searchQuery) => {
+  if (!Array.isArray(drivers)) {
+    return [];
+  }
+  
+  // If search query is empty or null, return all drivers
+  if (!searchQuery || searchQuery.trim() === '') {
+    return drivers;
+  }
+  
+  const query = searchQuery.toLowerCase().trim();
+  
+  return drivers.filter(driver => {
+    if (!driver || !driver.name) {
+      return false;
+    }
+    
+    return driver.name.toLowerCase().includes(query);
+  });
+};
