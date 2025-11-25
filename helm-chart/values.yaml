@@ -11,11 +11,13 @@ image:
   # Example: myregistry.azurecr.io/f1-racers-app
   repository: f1-racers-app
   # Image pull policy
-  # Options: Always, IfNotPresent, Never
+  # Options: Always (always pull from registry), IfNotPresent (use local if available), Never (use local only)
+  # Set to IfNotPresent for local development with Docker Desktop
+  # Set to Always when using a remote container registry
   pullPolicy: IfNotPresent
   # Image tag to deploy
-  # Overrides the image tag whose default is the chart appVersion
-  tag: ""
+  # Default: latest (automatically uses the latest image)
+  tag: "latest"
 
 service:
   # Service type
