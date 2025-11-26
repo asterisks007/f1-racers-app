@@ -4,7 +4,10 @@
   border-radius: 12px;
   padding: 1rem;
   transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4), 
+  /* Material Design elevation level 4 */
+  box-shadow: 0px 2px 4px -1px rgba(0,0,0,0.2),
+              0px 4px 5px 0px rgba(0,0,0,0.14),
+              0px 1px 10px 0px rgba(0,0,0,0.12),
               0 0 0 1px rgba(225, 6, 0, 0.1) inset;
   display: flex;
   flex-direction: column;
@@ -12,6 +15,11 @@
   overflow: hidden;
   height: auto;
   min-height: 260px;
+  touch-action: manipulation;
+  cursor: pointer;
+  /* Minimum touch target size */
+  min-width: 44px;
+  min-height: 44px;
 }
 
 .driver-card::before {
@@ -31,9 +39,13 @@
   left: 100%;
 }
 
-.driver-card:hover {
+.driver-card:hover,
+.driver-card.expanded {
   transform: translateY(-8px) scale(1.02);
-  box-shadow: 0 16px 32px rgba(225, 6, 0, 0.3),
+  /* Material Design elevation level 16 with F1 glow */
+  box-shadow: 0px 8px 10px -5px rgba(0,0,0,0.2),
+              0px 16px 24px 2px rgba(0,0,0,0.14),
+              0px 6px 30px 5px rgba(0,0,0,0.12),
               0 0 40px rgba(225, 6, 0, 0.2),
               0 0 0 2px rgba(225, 6, 0, 0.3) inset;
   border-color: #ff1e00;
@@ -75,7 +87,8 @@
   filter: blur(15px);
 }
 
-.driver-card:hover .driver-image-container::after {
+.driver-card:hover .driver-image-container::after,
+.driver-card.expanded .driver-image-container::after {
   opacity: 0.6;
 }
 
@@ -91,7 +104,8 @@
   z-index: 1;
 }
 
-.driver-card:hover .driver-image {
+.driver-card:hover .driver-image,
+.driver-card.expanded .driver-image {
   border-color: #e10600;
   box-shadow: 0 8px 24px rgba(225, 6, 0, 0.4);
 }
@@ -109,7 +123,8 @@
   z-index: 2;
 }
 
-.driver-card:hover .driver-name {
+.driver-card:hover .driver-name,
+.driver-card.expanded .driver-name {
   color: #ff1e00;
   font-size: 1.25rem;
 }
@@ -134,7 +149,8 @@
   margin-top: 0;
 }
 
-.driver-card:hover .driver-expanded-view {
+.driver-card:hover .driver-expanded-view,
+.driver-card.expanded .driver-expanded-view {
   opacity: 1;
   max-height: 300px;
   transform: translateY(0);
@@ -183,6 +199,34 @@
   text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
 }
 
+/* Reduced motion for low-end devices */
+.driver-card.reduced-motion,
+.driver-card.reduced-motion * {
+  transition-duration: 0.2s !important;
+  animation-duration: 0.2s !important;
+}
+
+.driver-card.reduced-motion::before {
+  display: none;
+}
+
+.driver-card.reduced-motion .driver-image-container::after {
+  display: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .driver-card,
+  .driver-card * {
+    transition-duration: 0.1s !important;
+    animation: none !important;
+  }
+  
+  .driver-card::before,
+  .driver-image-container::after {
+    display: none !important;
+  }
+}
+
 /* Responsive sizing */
 @media (max-width: 768px) {
   .driver-image {
@@ -199,7 +243,8 @@
     font-size: 1rem;
   }
   
-  .driver-card:hover .driver-name {
+  .driver-card:hover .driver-name,
+  .driver-card.expanded .driver-name {
     font-size: 1.15rem;
   }
   
@@ -208,7 +253,8 @@
     padding: 0.75rem;
   }
   
-  .driver-card:hover {
+  .driver-card:hover,
+  .driver-card.expanded {
     min-height: 380px;
   }
 }
@@ -228,7 +274,8 @@
     font-size: 0.95rem;
   }
   
-  .driver-card:hover .driver-name {
+  .driver-card:hover .driver-name,
+  .driver-card.expanded .driver-name {
     font-size: 1.1rem;
   }
   
@@ -237,11 +284,63 @@
     padding: 0.75rem;
   }
   
-  .driver-card:hover {
+  .driver-card:hover,
+  .driver-card.expanded {
     min-height: 360px;
   }
   
   .driver-info {
     font-size: 0.8rem;
+  }
+}
+
+/* Loading spinner styles */
+.image-loading-placeholder {
+  width: 110px;
+  height: 110px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 10px;
+  border: 2px solid #333;
+}
+
+.loading-spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid rgba(225, 6, 0, 0.2);
+  border-top-color: #e10600;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (max-width: 768px) {
+  .image-loading-placeholder {
+    width: 100px;
+    height: 100px;
+  }
+  
+  .loading-spinner {
+    width: 35px;
+    height: 35px;
+  }
+}
+
+@media (max-width: 480px) {
+  .image-loading-placeholder {
+    width: 90px;
+    height: 90px;
+  }
+  
+  .loading-spinner {
+    width: 30px;
+    height: 30px;
   }
 }

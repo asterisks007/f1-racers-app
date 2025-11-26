@@ -12,6 +12,11 @@ The F1 Racers App is a single-page application that displays information about F
 - **Styling**: CSS modules or Tailwind CSS for responsive design
 - **Data Source**: Static JSON data file or public F1 API (e.g., Ergast F1 API)
 - **Build Tool**: Vite or Create React App
+- **Mobile Platform**: React Native or Progressive Web App (PWA) for iOS and Android support
+- **UI Framework**: Material Design components (Material-UI or React Native Paper) for mobile interfaces
+- **Image Processing**: Canvas API or sharp library for image optimization
+- **Image Source**: Wikimedia Commons API for fetching driver images
+- **Caching**: Browser Cache API or IndexedDB for storing optimized images
 
 ### Application Structure
 ```
@@ -23,7 +28,9 @@ src/
 │   ├── ChampionBadge.jsx
 │   └── StandingsDisplay.jsx
 ├── services/
-│   └── driverService.js
+│   ├── driverService.js
+│   ├── imageService.js
+│   └── wikimediaService.js
 ├── data/
 │   └── drivers.json (if using static data)
 ├── App.jsx
@@ -87,6 +94,8 @@ src/
 
 **State**:
 - `imageError`: Boolean to track image loading failures
+- `optimizedImageUrl`: String to store the optimized/cached image URL
+- `imageLoading`: Boolean to track image optimization progress
 
 **Layout Structure**:
 - **Compact View** (Always Visible):
@@ -109,10 +118,13 @@ src/
 **Responsibilities**:
 - Display driver information in compact format by default
 - Expand to show full details on hover with smooth transitions
+- Fetch and display optimized driver images from cache or Wikimedia
 - Render driver picture with fallback to placeholder SVG
 - Show championship badge only in expanded state
 - Display standings information in compact state
 - Handle image loading errors gracefully
+- Trigger image optimization and caching on mount
+- Display loading state while image is being fetched/optimized
 - Animate transitions using cubic-bezier(0.4, 0, 0.2, 1) timing
 - Apply glow effects and scale transformations on hover
 - Detect row position and trigger automatic scrolling when needed
@@ -140,6 +152,89 @@ src/
 **Responsibilities**:
 - Display standing position
 - Format position display (e.g., "1st", "2nd", "3rd")
+
+## Image Management Services
+
+### WikimediaService
+**Purpose**: Fetch driver images from Wikimedia Commons
+
+**Functions**:
+```javascript
+export const fetchDriverImage = async (driverName) => {
+  // Returns Promise<string> (image URL)
+  // Searches Wikimedia Commons for driver image
+  // Uses Wikimedia API to find best quality image
+}
+
+export const getImageUrl = (filename) => {
+  // Returns string (direct image URL)
+  // Constructs direct URL to Wikimedia image file
+}
+```
+
+**Responsibilities**:
+- Query Wikimedia Commons API for driver images
+- Handle API authentication and rate limiting
+- Parse API responses to extract image URLs
+- Handle cases where no image is found
+
+### ImageService
+**Purpose**: Optimize and cache driver images
+
+**Functions**:
+```javascript
+export const optimizeImage = async (imageUrl, targetWidth = 440) => {
+  // Returns Promise<Blob>
+  // Fetches image from URL
+  // Resizes to target width maintaining aspect ratio
+  // Compresses for optimal file size
+}
+
+export const cacheImage = async (driverId, imageBlob) => {
+  // Returns Promise<void>
+  // Stores optimized image in browser cache
+  // Uses Cache API or IndexedDB
+}
+
+export const getCachedImage = async (driverId) => {
+  // Returns Promise<string | null>
+  // Retrieves cached image as data URL
+  // Returns null if not cached
+}
+
+export const getDriverImage = async (driverId, driverName) => {
+  // Returns Promise<string>
+  // Main function that orchestrates the flow:
+  // 1. Check cache first
+  // 2. If not cached, fetch from Wikimedia
+  // 3. Optimize the image
+  // 4. Cache the optimized image
+  // 5. Return data URL for display
+}
+```
+
+**Responsibilities**:
+- Fetch images from Wikimedia via WikimediaService
+- Resize images to 440px width using Canvas API
+- Maintain aspect ratio during optimization
+- Store optimized images in browser cache
+- Retrieve cached images when available
+- Update cache when new images are fetched
+- Provide fallback to placeholder on errors
+
+**Caching Strategy**:
+- Use Cache API for storing optimized images
+- Cache key format: `driver-image-${driverId}`
+- Cache images as Blob objects
+- Implement cache versioning for updates
+- Clear old cache entries when new images fetched
+
+**Optimization Algorithm**:
+1. Create canvas element with target dimensions
+2. Calculate height maintaining aspect ratio
+3. Draw image on canvas at new dimensions
+4. Convert canvas to Blob with quality setting
+5. Return optimized Blob for caching
 
 ## Data Models
 
@@ -182,6 +277,154 @@ export const searchDrivers = (drivers, searchQuery) => {
   // Filters drivers by name matching search query (case-insensitive, partial match)
 }
 ```
+
+## Correctness Properties
+
+*A property is a characteristic or behavior that should hold true across all valid executions of a system—essentially, a formal statement about what the system should do. Properties serve as the bridge between human-readable specifications and machine-verifiable correctness guarantees.*
+
+### Property 1: Driver name display completeness
+*For any* driver in the displayed list, the driver's name should be present in the rendered output.
+**Validates: Requirements 1.3**
+
+### Property 2: Standings display completeness
+*For any* driver with a standing position, that position should be displayed in the UI.
+**Validates: Requirements 2.1, 2.2**
+
+### Property 3: Champion indication
+*For any* driver, the UI should clearly indicate whether they are a World Champion.
+**Validates: Requirements 3.1**
+
+### Property 4: Championship years display
+*For any* driver who is a World Champion, all of their championship years should be displayed.
+**Validates: Requirements 3.2, 3.4**
+
+### Property 5: Champion visual distinction
+*For any* two drivers where one is a champion and one is not, there should be a visual difference in their display.
+**Validates: Requirements 3.3**
+
+### Property 6: Search filtering accuracy
+*For any* search query text, the displayed driver list should contain only drivers whose names contain that text as a substring.
+**Validates: Requirements 5.2**
+
+### Property 7: Substring search matching
+*For any* driver name and any substring of that name (beginning, middle, or end), searching for that substring should match the driver.
+**Validates: Requirements 5.3**
+
+### Property 8: Driver image display
+*For any* driver in the list, an image (either actual photo or placeholder) should be displayed.
+**Validates: Requirements 6.1**
+
+### Property 9: Placeholder fallback for unavailable images
+*For any* driver without an available picture, the placeholder image should be displayed.
+**Validates: Requirements 6.4**
+
+### Property 10: Placeholder fallback for failed images
+*For any* driver image that fails to load, the placeholder image should be displayed instead.
+**Validates: Requirements 6.5**
+
+### Property 11: Compact view content requirements
+*For any* driver card in compact view, it should display the driver image, name, and standings.
+**Validates: Requirements 8.1**
+
+### Property 12: Hover expansion behavior
+*For any* driver card, hovering over it should expand the card and reveal additional information (nationality, team, championship details).
+**Validates: Requirements 8.2**
+
+### Property 13: Animation duration minimum
+*For any* transition between compact and expanded views, the animation should last at least 0.5 seconds.
+**Validates: Requirements 8.3**
+
+### Property 14: Compact view centering
+*For any* driver card in compact view, the content should be centered.
+**Validates: Requirements 8.4**
+
+### Property 15: Champion badge visibility restriction
+*For any* driver who is a World Champion, the champion badge should only be visible in the expanded hover state, not in compact view.
+**Validates: Requirements 8.5**
+
+### Property 16: Interactive element hover effects
+*For any* interactive element, hovering should trigger glowing borders and scale transformations.
+**Validates: Requirements 9.2**
+
+### Property 17: Animation timing function consistency
+*For any* animation or transition in the application, the timing function should use cubic-bezier.
+**Validates: Requirements 9.3**
+
+### Property 18: Brand color consistency
+*For any* element using the F1 brand accent color, the color value should be #e10600.
+**Validates: Requirements 9.5**
+
+### Property 19: Responsive sizing adjustments
+*For any* viewport size (desktop, tablet, mobile), appropriate sizing adjustments should be applied to UI elements.
+**Validates: Requirements 9.7**
+
+### Property 20: Desktop grid layout (4 columns)
+*For any* desktop viewport wider than 1400 pixels, exactly 4 driver cards should be displayed per row.
+**Validates: Requirements 10.1**
+
+### Property 21: Medium screen grid layout (3 columns)
+*For any* viewport between 1025 and 1400 pixels, exactly 3 driver cards should be displayed per row.
+**Validates: Requirements 10.2**
+
+### Property 22: Tablet grid layout (2 columns)
+*For any* viewport between 769 and 1024 pixels, exactly 2 driver cards should be displayed per row.
+**Validates: Requirements 10.3**
+
+### Property 23: Mobile grid layout (1 column)
+*For any* viewport 768 pixels or smaller, exactly 1 driver card should be displayed per row.
+**Validates: Requirements 10.4**
+
+### Property 24: Responsive spacing consistency
+*For any* responsive breakpoint, consistent spacing values should be applied to maintain visual alignment.
+**Validates: Requirements 10.5**
+
+### Property 25: Row detection on hover
+*For any* driver card hover event, the system should correctly identify which row the card belongs to.
+**Validates: Requirements 11.1**
+
+### Property 26: Automatic scroll for overflow rows
+*For any* expanded row that extends beyond the viewport, automatic scrolling should occur to display the entire row.
+**Validates: Requirements 11.2**
+
+### Property 27: Scroll position calculation accuracy
+*For any* scroll calculation, the sticky header height and viewport padding should be factored into the position.
+**Validates: Requirements 11.3**
+
+### Property 28: Smooth scrolling behavior
+*For any* viewport position adjustment, smooth scrolling behavior should be used.
+**Validates: Requirements 11.4**
+
+### Property 29: Row positioning with padding
+*For any* expanded row that fits within the viewport, appropriate padding from the header should be applied.
+**Validates: Requirements 11.5**
+
+### Property 30: Scroll delay timing
+*For any* scroll trigger from card hover, a 100 millisecond delay should be applied before scrolling begins.
+**Validates: Requirements 11.6**
+
+### Property 31: Mobile search functionality
+*For any* mobile device accessing the application, the driver search functionality should work correctly.
+**Validates: Requirements 12.2**
+
+### Property 32: Wikimedia image source
+*For any* driver image request, the image should be fetched from Wikimedia sources.
+**Validates: Requirements 13.1**
+
+### Property 33: Image optimization dimensions
+*For any* image fetched from Wikimedia, the optimized version should have a width of 440 pixels while maintaining the original aspect ratio.
+**Validates: Requirements 13.2**
+
+### Property 34: Cache update on new image
+*For any* newly fetched and optimized image, the image cache should be updated immediately.
+**Validates: Requirements 13.3**
+
+### Property 35: Cache retrieval for display
+*For any* driver image display request, the application should first check and retrieve from the cache.
+**Validates: Requirements 13.4**
+
+### Property 36: Cache usage over re-fetching
+*For any* driver image that exists in the cache, the cached version should be used without re-fetching from Wikimedia.
+**Validates: Requirements 13.5**
 
 ## Visual Design and Styling
 
@@ -347,6 +590,64 @@ Ensure that when a user hovers over any driver card, the entire row of cards is 
 - Accounts for varying card heights during expansion
 - Prevents unnecessary scrolling when row already visible
 
+## Mobile Platform Support
+
+### Mobile Application Strategy
+
+**Approach**: Progressive Web App (PWA) with React
+- Leverage existing React web application codebase
+- Add PWA capabilities for installable mobile experience
+- Ensure responsive design works seamlessly on mobile devices
+- Implement Material Design principles for mobile UI consistency
+
+**Alternative Approach**: React Native (if native mobile apps required)
+- Share business logic and data services between web and mobile
+- Create platform-specific UI components for iOS and Android
+- Use React Native Paper for Material Design components
+- Maintain consistent user experience across platforms
+
+### Mobile-Specific Features
+
+**Touch Interactions**:
+- Tap to expand driver cards (instead of hover)
+- Swipe gestures for navigation (if applicable)
+- Touch-optimized button and input sizes (minimum 44x44px)
+- Haptic feedback for interactions (React Native)
+
+**Mobile UI Adaptations**:
+- Bottom navigation or hamburger menu for mobile
+- Full-screen search overlay on mobile devices
+- Optimized card layouts for portrait and landscape orientations
+- Reduced animations for better performance on lower-end devices
+
+**Material Design Implementation**:
+- Use Material Design elevation system for depth
+- Implement Material ripple effects on interactive elements
+- Follow Material Design spacing and typography guidelines
+- Use Material Design color system with F1 brand colors
+- Implement Material Design motion principles for smooth transitions
+
+**Performance Optimizations**:
+- Lazy loading of driver images
+- Virtual scrolling for large driver lists
+- Optimized bundle size for mobile networks
+- Service worker for offline capability (PWA)
+- Image optimization and responsive images
+
+**Platform-Specific Considerations**:
+- iOS: Safe area insets for notched devices
+- Android: Back button handling
+- Both: Status bar styling to match app theme
+- Both: Splash screen with F1 branding
+
+### Mobile Testing Strategy
+- Test on various iOS devices (iPhone SE, iPhone 14, iPad)
+- Test on various Android devices (different screen sizes and OS versions)
+- Verify touch interactions work smoothly
+- Test search functionality on mobile keyboards
+- Verify Material Design components render correctly
+- Test performance on slower mobile networks
+
 ## Containerization and Deployment
 
 ### Docker Configuration
@@ -410,16 +711,60 @@ helm-chart/
 
 ## Testing Strategy
 
+### Property-Based Testing
+
+**Library**: fast-check (for JavaScript/React)
+
+**Configuration**:
+- Minimum 100 iterations per property test
+- Each property test must reference its corresponding correctness property using the format: `**Feature: f1-racers-app, Property {number}: {property_text}**`
+- Each correctness property should be implemented by a single property-based test
+
+**Property Test Coverage**:
+- Property 1-5: Driver display and champion indication properties
+- Property 6-10: Search and image display properties
+- Property 11-15: Card layout and interaction properties
+- Property 16-19: Styling and animation properties
+- Property 20-24: Responsive grid layout properties
+- Property 25-30: Row scrolling behavior properties
+- Property 31: Mobile search functionality
+- Property 32-36: Image fetching, optimization, and caching properties
+
+**Testing Approach**:
+- Generate random driver data with various combinations of properties
+- Generate random viewport sizes for responsive testing
+- Generate random search queries for filtering tests
+- Test image optimization with various image dimensions
+- Verify cache behavior with different cache states
+
 ### Unit Tests
-- Test driver service functions (sorting, filtering)
+- Test driver service functions (sorting, filtering, searching)
 - Test component rendering with mock data
 - Test champion badge display logic
 - Test standings formatting
+- Test touch interaction handlers for mobile
+- Test image service functions (optimization, caching)
+- Test Wikimedia service API integration
+- Test cache retrieval and storage mechanisms
 
 ### Integration Tests
 - Test data flow from service to components
-- Test user interactions (if filtering/sorting added)
+- Test user interactions (filtering, sorting, search)
 - Test error handling scenarios
+- Test PWA installation and offline functionality
+- Test Material Design component integration
+- Test end-to-end image fetching and caching flow
+- Test cache invalidation and updates
+
+### Mobile Testing
+- Test responsive layouts on various mobile screen sizes
+- Verify touch interactions work correctly (tap, swipe)
+- Test search functionality with mobile keyboards
+- Verify smooth transitions and animations on mobile devices
+- Test on actual iOS and Android devices
+- Verify Material Design principles are properly implemented
+- Test performance on slower mobile networks
+- Verify safe area handling on notched devices
 
 ### Container Testing
 - Verify Docker image builds successfully
@@ -433,3 +778,7 @@ helm-chart/
 - Validate data accuracy against known F1 records
 - Test loading states and error messages
 - Verify application accessibility via configured URL after deployment
+- Test mobile app installation (PWA) on iOS and Android
+- Verify Material Design aesthetics and interactions
+- Test image optimization quality and performance
+- Verify cache persistence across sessions

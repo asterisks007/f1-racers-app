@@ -1,10 +1,14 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
+import ButtonBase from '@mui/material/ButtonBase';
 import StandingsDisplay from './StandingsDisplay';
 import ChampionBadge from './ChampionBadge';
+import { isLowEndDevice } from '../utils/deviceDetection';
+import { getDriverImage } from '../services/imageService';
 import './DriverCard.css';
 
 const DriverCard = ({ driver }) => {
   const {
+    id,
     name,
     nationality,
     team,
@@ -15,11 +19,93 @@ const DriverCard = ({ driver }) => {
   } = driver;
 
   const [imageError, setImageError] = useState(false);
+  const [isExpanded, setIsExpanded] = useState(false);
+  const [imageSrc, setImageSrc] = useState(null);
+  const [isInView, setIsInView] = useState(false);
+  const [optimizedImageUrl, setOptimizedImageUrl] = useState(null);
+  const [imageLoading, setImageLoading] = useState(false);
   const cardRef = useRef(null);
+  const imageRef = useRef(null);
   const placeholderImage = '/driver-placeholder.svg';
+  const reducedAnimations = isLowEndDevice();
+
+  // Lazy loading with Intersection Observer
+  useEffect(() => {
+    if (!imageRef.current) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setIsInView(true);
+            observer.disconnect();
+          }
+        });
+      },
+      {
+        rootMargin: '50px', // Start loading slightly before image enters viewport
+      }
+    );
+
+    observer.observe(imageRef.current);
+
+    return () => {
+      observer.disconnect();
+    };
+  }, []);
+
+  // Fetch and optimize image when component mounts
+  useEffect(() => {
+    const fetchOptimizedImage = async () => {
+      if (!id || !name) return;
+      
+      setImageLoading(true);
+      
+      try {
+        const optimizedUrl = await getDriverImage(id, name);
+        
+        if (optimizedUrl) {
+          setOptimizedImageUrl(optimizedUrl);
+        } else {
+          // If no image from Wikimedia, fall back to provided imageUrl or placeholder
+          setOptimizedImageUrl(imageUrl || null);
+        }
+      } catch (error) {
+        console.error(`Error fetching optimized image for ${name}:`, error);
+        setOptimizedImageUrl(imageUrl || null);
+      } finally {
+        setImageLoading(false);
+      }
+    };
+    
+    fetchOptimizedImage();
+  }, [id, name, imageUrl]);
+
+  // Load image when in view
+  useEffect(() => {
+    if (isInView && optimizedImageUrl && !imageError) {
+      setImageSrc(optimizedImageUrl);
+    } else if (isInView && !optimizedImageUrl && !imageLoading) {
+      // If no optimized image and not loading, use placeholder
+      setImageSrc(placeholderImage);
+    }
+  }, [isInView, optimizedImageUrl, imageError, imageLoading]);
 
   const handleImageError = () => {
     setImageError(true);
+    setImageSrc(placeholderImage);
+  };
+
+  const handleTouchStart = (e) => {
+    // Prevent default to avoid unwanted gestures
+    e.stopPropagation();
+  };
+
+  const handleTouchEnd = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    // Toggle expanded state on tap
+    setIsExpanded(prev => !prev);
   };
 
   const handleMouseEnter = () => {
@@ -86,20 +172,43 @@ const DriverCard = ({ driver }) => {
   };
 
   return (
-    <div 
-      className="driver-card" 
-      ref={cardRef}
-      onMouseEnter={handleMouseEnter}
+    <ButtonBase
+      component="div"
+      sx={{
+        width: '100%',
+        display: 'block',
+        textAlign: 'inherit',
+        borderRadius: '12px',
+      }}
+      TouchRippleProps={{
+        style: {
+          color: '#e10600',
+        }
+      }}
     >
-      {/* Compact View - Always Visible */}
-      <div className="driver-compact-view">
-        <div className="driver-image-container">
-          <img 
-            src={imageError || !imageUrl ? placeholderImage : imageUrl}
-            alt={`${name} portrait`}
-            className="driver-image"
-            onError={handleImageError}
-          />
+      <div 
+        className={`driver-card ${isExpanded ? 'expanded' : ''} ${reducedAnimations ? 'reduced-motion' : ''}`}
+        ref={cardRef}
+        onMouseEnter={handleMouseEnter}
+        onTouchStart={handleTouchStart}
+        onTouchEnd={handleTouchEnd}
+      >
+        {/* Compact View - Always Visible */}
+        <div className="driver-compact-view">
+        <div className="driver-image-container" ref={imageRef}>
+          {imageLoading && !imageSrc ? (
+            <div className="image-loading-placeholder">
+              <div className="loading-spinner"></div>
+            </div>
+          ) : (
+            <img 
+              src={imageSrc || placeholderImage}
+              alt={`${name} portrait`}
+              className="driver-image"
+              onError={handleImageError}
+              loading="lazy"
+            />
+          )}
         </div>
         <h2 className="driver-name">{name}</h2>
         <div className="standings-wrapper">
@@ -125,6 +234,7 @@ const DriverCard = ({ driver }) => {
         )}
       </div>
     </div>
+    </ButtonBase>
   );
 };
 

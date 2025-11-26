@@ -85,9 +85,9 @@ Deploy the F1 Racers app to a Kubernetes cluster using the included Helm chart.
 - Kubernetes cluster (Docker Desktop, Minikube, or cloud provider)
 - kubectl configured to access your cluster
 - Helm 3.x installed
-- Docker image built and available
+- Docker image built and available locally or in a container registry
 
-#### Quick Start - Docker Desktop Kubernetes
+#### Quick Start - Local Development (Docker Desktop Kubernetes)
 
 1. **Enable Kubernetes in Docker Desktop**
    - Open Docker Desktop settings
@@ -100,12 +100,15 @@ Deploy the F1 Racers app to a Kubernetes cluster using the included Helm chart.
    docker build -t f1-racers-app:latest .
    ```
 
-3. **Deploy with Helm**
+3. **Deploy with Helm (No additional flags needed!)**
    ```bash
-   helm install f1-racers ./helm-chart \
-     --set image.tag=latest \
-     --set image.pullPolicy=IfNotPresent
+   helm install f1-racers ./helm-chart
    ```
+   
+   The chart is pre-configured with:
+   - Image: `f1-racers-app:latest`
+   - Pull Policy: `IfNotPresent` (uses local Docker image)
+   - Service Type: `ClusterIP`
 
 4. **Access the application**
    ```bash
@@ -117,50 +120,65 @@ Deploy the F1 Racers app to a Kubernetes cluster using the included Helm chart.
 
 #### Deployment Options
 
-**Basic installation:**
+**Basic installation (uses defaults from values.yaml):**
 ```bash
-helm install f1-racers ./helm-chart --set image.tag=latest
+helm install f1-racers ./helm-chart
 ```
 
 **With custom replica count:**
 ```bash
-helm install f1-racers ./helm-chart \
-  --set image.tag=latest \
-  --set replicaCount=3
+helm install f1-racers ./helm-chart --set replicaCount=3
+```
+
+**With NodePort service (access via node IP):**
+```bash
+helm install f1-racers ./helm-chart --set service.type=NodePort
 ```
 
 **With LoadBalancer service (cloud environments):**
 ```bash
-helm install f1-racers ./helm-chart \
-  --set image.tag=latest \
-  --set service.type=LoadBalancer
+helm install f1-racers ./helm-chart --set service.type=LoadBalancer
 ```
 
 **With Ingress enabled:**
 ```bash
 helm install f1-racers ./helm-chart \
-  --set image.tag=latest \
   --set ingress.enabled=true \
   --set ingress.hosts[0].host=f1-racers.example.com \
   --set ingress.className=nginx
+```
+
+**For remote container registry (e.g., Docker Hub, ACR, ECR):**
+```bash
+helm install f1-racers ./helm-chart \
+  --set image.repository=myregistry.azurecr.io/f1-racers-app \
+  --set image.tag=v1.0.0 \
+  --set image.pullPolicy=Always
 ```
 
 #### Managing the Deployment
 
 **Check deployment status:**
 ```bash
-kubectl get all
+kubectl get all -l app.kubernetes.io/name=f1-racers-app
 kubectl get pods -l app.kubernetes.io/name=f1-racers-app
 ```
 
 **View application logs:**
 ```bash
-kubectl logs -l app.kubernetes.io/name=f1-racers-app
+kubectl logs -l app.kubernetes.io/name=f1-racers-app -f
 ```
 
 **Upgrade the deployment:**
 ```bash
-helm upgrade f1-racers ./helm-chart --set image.tag=v2.0.0
+# After making code changes and rebuilding the Docker image
+docker build -t f1-racers-app:latest .
+
+# Restart the deployment to use the new image
+kubectl rollout restart deployment f1-racers-f1-racers-app
+
+# Or upgrade via Helm
+helm upgrade f1-racers ./helm-chart
 ```
 
 **Uninstall the application:**
@@ -168,10 +186,45 @@ helm upgrade f1-racers ./helm-chart --set image.tag=v2.0.0
 helm uninstall f1-racers
 ```
 
+**View Helm release information:**
+```bash
+helm list
+helm status f1-racers
+helm get values f1-racers
+```
+
 #### Customizing the Deployment
 
-Create a custom values file (e.g., `my-values.yaml`):
+The Helm chart comes with sensible defaults in `helm-chart/values.yaml`:
 
+```yaml
+replicaCount: 1
+
+image:
+  repository: f1-racers-app
+  tag: "latest"
+  pullPolicy: IfNotPresent  # Uses local Docker image
+
+service:
+  type: ClusterIP
+  port: 80
+
+ingress:
+  enabled: false
+
+resources: {}  # No limits by default
+```
+
+**Option 1: Override values with --set flags**
+```bash
+helm install f1-racers ./helm-chart \
+  --set replicaCount=3 \
+  --set service.type=LoadBalancer
+```
+
+**Option 2: Create a custom values file**
+
+Create `my-values.yaml`:
 ```yaml
 replicaCount: 2
 
@@ -181,7 +234,7 @@ image:
   pullPolicy: IfNotPresent
 
 service:
-  type: ClusterIP
+  type: NodePort
   port: 80
 
 resources:
@@ -197,6 +250,12 @@ Deploy with custom values:
 ```bash
 helm install f1-racers ./helm-chart -f my-values.yaml
 ```
+
+#### Image Pull Policy Guide
+
+- **`IfNotPresent`** (Default): Uses local Docker image if available. Best for local development with Docker Desktop.
+- **`Always`**: Always pulls from container registry. Use when deploying from Docker Hub, ACR, ECR, etc.
+- **`Never`**: Only uses local images, never pulls. Useful for air-gapped environments.
 
 For detailed deployment instructions, troubleshooting, and cloud provider-specific guides, see [DEPLOYMENT.md](./DEPLOYMENT.md).
 

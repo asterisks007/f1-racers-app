@@ -1,0 +1,20 @@
+{
+  "name": "F1 Racers App",
+  "short_name": "F1 Racers",
+  "description": "View Formula 1 drivers, standings, and championship information",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0a0a0a",
+  "theme_color": "#e10600",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/vite.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["sports", "entertainment"],
+  "screenshots": []
+}
