@@ -1,14 +1,38 @@
 # F1 Racers App
 
-A React application displaying Formula 1 driver standings with champion badges and detailed driver information.
+A modern, responsive React application displaying Formula 1 driver information with interactive cards, real-time search, and optimized driver images from Wikimedia Commons.
 
 ## Features
 
-- Display current F1 driver standings
-- Show world champion badges with championship years
-- Filter drivers by championship status
-- Sort drivers by current standing position
-- Responsive card-based layout
+### Core Features
+- **Driver Information Display**: View current and historical F1 drivers with comprehensive details
+- **Championship Standings**: See driver rankings with formatted position indicators (1st, 2nd, 3rd, etc.)
+- **World Champion Badges**: Visual indicators showing championship years for world champions
+- **Real-time Search**: Filter drivers by name with instant results
+- **Driver Images**: High-quality photos fetched from Wikimedia Commons with automatic optimization
+
+### Interactive UI
+- **Compact/Expanded Cards**: Hover over driver cards to reveal detailed information
+- **Smooth Animations**: Modern transitions with cubic-bezier timing functions
+- **Row-based Scrolling**: Automatic viewport adjustment when hovering over cards
+- **Visual Effects**: Gradient backgrounds, glow effects, and animated shine elements
+
+### Mobile Support
+- **Progressive Web App (PWA)**: Installable on iOS and Android devices
+- **Material Design**: Consistent mobile UI with Material-UI components
+- **Touch Interactions**: Tap to expand driver cards on mobile devices
+- **Responsive Layout**: Optimized for all screen sizes (mobile, tablet, desktop)
+
+### Performance
+- **Image Optimization**: Automatic resizing to 440px width while maintaining aspect ratio
+- **Image Caching**: Browser cache for optimized images to reduce network requests
+- **Retry Logic**: Automatic retry with exponential backoff for failed API requests
+- **Lazy Loading**: Efficient loading of driver images
+
+### Deployment
+- **Docker Support**: Multi-stage Dockerfile for containerized deployment
+- **Kubernetes Ready**: Helm charts for easy cluster deployment
+- **Configurable**: Flexible deployment options via Helm values
 
 ## Prerequisites
 
@@ -264,36 +288,138 @@ For detailed deployment instructions, troubleshooting, and cloud provider-specif
 ```
 f1-racers-app/
 ├── src/
-│   ├── components/       # React components
-│   │   ├── ChampionBadge.jsx
-│   │   ├── DriverCard.jsx
-│   │   ├── DriverList.jsx
-│   │   └── StandingsDisplay.jsx
-│   ├── services/         # Business logic
-│   │   └── driverService.js
-│   ├── data/            # Static data
-│   │   └── drivers.json
-│   ├── test/            # Test setup
-│   │   └── setup.js
-│   ├── App.jsx
-│   └── main.jsx
-├── specs/               # Project documentation
-│   ├── requirements.md
-│   ├── design.md
-│   └── tasks.md
+│   ├── components/           # React components
+│   │   ├── ChampionBadge.jsx         # Championship badge display
+│   │   ├── DriverCard.jsx            # Individual driver card with hover effects
+│   │   ├── DriverList.jsx            # Grid layout for driver cards
+│   │   ├── StandingsDisplay.jsx      # Position indicator component
+│   │   ├── SearchBox.jsx             # Search input component
+│   │   ├── MobileSearchOverlay.jsx   # Mobile search dialog
+│   │   └── *.css                     # Component-specific styles
+│   ├── services/             # Business logic and API integration
+│   │   ├── driverService.js          # Driver data operations
+│   │   ├── imageService.js           # Image optimization and caching
+│   │   └── wikimediaService.js       # Wikimedia API integration
+│   ├── utils/                # Utility functions
+│   │   └── deviceDetection.js        # Mobile/desktop detection
+│   ├── data/                 # Static data
+│   │   └── drivers.json              # Driver information database
+│   ├── test/                 # Test configuration
+│   │   └── setup.js                  # Vitest setup
+│   ├── assets/               # Static assets
+│   ├── App.jsx               # Main application component
+│   ├── theme.js              # Material-UI theme configuration
+│   └── main.jsx              # Application entry point
+├── public/                   # Public assets
+│   ├── manifest.json         # PWA manifest
+│   └── driver-placeholder.svg # Fallback driver image
+├── helm-chart/               # Kubernetes deployment
+│   ├── Chart.yaml
+│   ├── values.yaml
+│   └── templates/
+├── .kiro/specs/              # Project documentation
+│   └── f1-racers-app/
+│       ├── requirements.md   # Feature requirements and user stories
+│       ├── design.md         # Architecture and design decisions
+│       └── tasks.md          # Implementation task list
+├── Dockerfile                # Container image definition
+├── DEPLOYMENT.md             # Detailed deployment guide
 └── package.json
 ```
 
 ## Technologies Used
 
-- React 19.2.0
-- Vite 7.2.2
-- Vitest (testing)
-- @testing-library/react (component testing)
+### Frontend
+- **React 19.2.0** - UI framework
+- **Vite 7.2.2** - Build tool and dev server
+- **Material-UI (MUI)** - Material Design components for mobile
+- **CSS3** - Custom styling with gradients, animations, and effects
+
+### Testing
+- **Vitest** - Unit and integration testing
+- **@testing-library/react** - Component testing
+- **@testing-library/user-event** - User interaction testing
+- **fast-check** - Property-based testing
+- **jsdom** - DOM environment for testing
+
+### APIs & Services
+- **Wikimedia Commons API** - Driver image fetching
+- **Browser Cache API** - Image caching and optimization
+- **Canvas API** - Image resizing and optimization
+
+### DevOps
+- **Docker** - Containerization
+- **Kubernetes** - Container orchestration
+- **Helm** - Kubernetes package management
+- **nginx** - Production web server
+
+## Testing
+
+The project includes comprehensive test coverage:
+
+```bash
+# Run all tests
+npm test
+
+# Run tests in watch mode
+npm run test:watch
+
+# Run tests with coverage
+npm run test:coverage
+```
+
+### Test Coverage
+- **107 tests** across 12 test files
+- **Unit tests** for all services and components
+- **Property-based tests** for image optimization and caching
+- **Integration tests** for user interactions
+- **Mobile interaction tests** for touch events
+
+## Browser Support
+
+- Chrome/Edge (latest)
+- Firefox (latest)
+- Safari (latest)
+- Mobile browsers (iOS Safari, Chrome Mobile)
+
+## Performance Features
+
+- **Image Optimization**: Automatic resizing to 440px width
+- **Caching Strategy**: Browser Cache API for persistent storage
+- **Retry Logic**: Exponential backoff for failed API requests
+- **Lazy Loading**: Images load on demand
+- **Responsive Images**: Optimized for different screen sizes
+
+## Accessibility
+
+- Semantic HTML structure
+- ARIA labels for interactive elements
+- Keyboard navigation support
+- Touch-friendly mobile interface (44x44px minimum touch targets)
 
 ## Documentation
 
-See the `specs/` folder for detailed project documentation:
-- `requirements.md` - Feature requirements and user stories
-- `design.md` - Architecture and design decisions
-- `tasks.md` - Implementation task list
+See the `.kiro/specs/f1-racers-app/` folder for detailed project documentation:
+- `requirements.md` - Feature requirements and user stories with EARS patterns
+- `design.md` - Architecture, design decisions, and correctness properties
+- `tasks.md` - Implementation task list and progress tracking
+
+For deployment instructions, see [DEPLOYMENT.md](./DEPLOYMENT.md).
+
+## License
+
+This project uses driver images from Wikimedia Commons under Creative Commons licenses. All images are properly attributed and comply with their respective licenses.
+
+## Contributing
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+## Acknowledgments
+
+- Driver data and images sourced from Wikimedia Commons
+- F1 brand colors and design inspiration from Formula 1
+- Material Design guidelines for mobile UI
