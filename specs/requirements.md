@@ -23,6 +23,13 @@ This document defines the requirements for a single-page application that displa
 - **Gradient**: A gradual blend between two or more colors used for visual depth and modern aesthetics
 - **Glow Effect**: A visual effect that creates an illuminated border or shadow around an element
 - **Placeholder Image**: A default SVG illustration displayed when a driver's actual photo is unavailable or fails to load
+- **Wikimedia**: A free content media repository that provides copyright-free images under creative commons licenses
+- **Image Cache**: A storage mechanism that retains optimized driver images to reduce network requests and improve loading performance
+- **Image Optimization**: The process of resizing and compressing images to a target dimension while maintaining visual quality and aspect ratio
+- **Retry Logic**: An error handling mechanism that automatically re-attempts failed operations with delays between attempts
+- **Exponential Backoff**: A retry strategy where the delay between retry attempts increases progressively to handle rate limiting and temporary failures
+- **Rate Limiting**: A restriction imposed by APIs to control the number of requests made within a specific time period
+- **Racing Team Car Image**: A photograph or illustration of the Formula 1 race car used by a driver's team
 
 ## Requirements
 
@@ -153,3 +160,39 @@ This document defines the requirements for a single-page application that displa
 4. THE F1 Racers App SHALL use smooth scrolling behavior when adjusting viewport position
 5. WHERE the expanded row fits within the available viewport, THE F1 Racers App SHALL position the row with appropriate padding from the header
 6. THE F1 Racers App SHALL apply a 100 millisecond delay before scrolling to allow expansion animation to begin
+
+### Requirement 12
+
+**User Story:** As a mobile user, I want to access the F1 Racers App on iOS and Android devices, so that I can view driver information on my mobile device
+
+#### Acceptance Criteria
+
+1. THE F1 Racers App SHALL provide an intuitive user interface with smooth transitions on mobile devices
+2. WHEN a user accesses the application on a mobile device, THE F1 Racers App SHALL support driver search functionality
+3. THE F1 Racers App SHALL implement Material Design principles for mobile interfaces
+
+### Requirement 13
+
+**User Story:** As a user, I want driver images to be fetched from Wikimedia and optimized for display, so that I can view high-quality driver photos with fast loading times
+
+#### Acceptance Criteria
+
+1. WHEN the application requests a driver image, THE F1 Racers App SHALL fetch the image from Wikimedia sources
+2. WHEN an image is fetched from Wikimedia, THE F1 Racers App SHALL optimize the image to 440 pixels width while maintaining aspect ratio
+3. WHEN a new image is fetched and optimized, THE F1 Racers App SHALL update the image cache immediately
+4. WHEN the application displays driver images, THE F1 Racers App SHALL retrieve images from the cache
+5. WHERE an optimized image exists in the cache, THE F1 Racers App SHALL use the cached version without re-fetching from Wikimedia
+6. WHEN a Wikimedia API request fails due to network errors or rate limiting, THE F1 Racers App SHALL retry the request with exponential backoff delays
+7. WHERE all retry attempts fail for a driver image, THE F1 Racers App SHALL return null and display the placeholder image
+
+### Requirement 14
+
+**User Story:** As a user, I want to see racing team car images alongside driver pictures, so that I can visually identify the team and car associated with each driver
+
+#### Acceptance Criteria
+
+1. WHEN a user hovers over a driver card to reveal expanded view, THE F1 Racers App SHALL display the racing team car image alongside the driver picture
+2. THE F1 Racers App SHALL fetch racing team car images from Wikimedia sources
+3. THE F1 Racers App SHALL optimize racing team car images to 440 pixels width while maintaining aspect ratio
+4. WHERE a racing team car image is unavailable, THE F1 Racers App SHALL display a placeholder image or omit the car image section
+5. WHEN a racing team car image fails to load, THE F1 Racers App SHALL display a placeholder image or gracefully handle the missing image

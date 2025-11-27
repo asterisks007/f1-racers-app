@@ -245,3 +245,75 @@
     font-size: 0.8rem;
   }
 }
+
+/* Team Car Section */
+.team-car-section {
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(225, 6, 0, 0.2);
+  opacity: 0;
+  transform: translateY(10px);
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1) 0.1s;
+}
+
+.driver-card:hover .team-car-section {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.car-section-title {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #e10600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin: 0 0 0.75rem 0;
+  text-align: center;
+}
+
+.team-car-image-container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+  border-radius: 8px;
+  background: rgba(0, 0, 0, 0.3);
+  padding: 0.5rem;
+}
+
+.team-car-image {
+  width: 100%;
+  max-width: 280px;
+  height: auto;
+  object-fit: contain;
+  border-radius: 6px;
+  transition: all 0.3s ease;
+  filter: brightness(0.9);
+}
+
+.driver-card:hover .team-car-image {
+  filter: brightness(1);
+  transform: scale(1.05);
+}
+
+/* Responsive sizing for team car images */
+@media (max-width: 768px) {
+  .team-car-image {
+    max-width: 240px;
+  }
+  
+  .car-section-title {
+    font-size: 0.8rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .team-car-image {
+    max-width: 200px;
+  }
+  
+  .car-section-title {
+    font-size: 0.75rem;
+  }
+}

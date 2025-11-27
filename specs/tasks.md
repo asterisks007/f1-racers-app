@@ -386,3 +386,211 @@
     - Verify 2-card row scrolling on tablets (769-1024px)
     - Verify single card behavior on mobile (≤768px)
     - _Requirements: 11.1, 11.2, 11.3, 11.4_
+
+- [x] 17. Implement mobile platform support
+  - [x] 17.1 Add PWA configuration
+    - Create manifest.json with app metadata, icons, and theme colors
+    - Configure service worker for offline capability and caching
+    - Add PWA meta tags to index.html for mobile installation
+    - Test PWA installation on iOS Safari and Android Chrome
+    - _Requirements: 12.1, 12.2_
+  
+  - [x] 17.2 Implement touch interactions for mobile
+    - Replace hover interactions with tap/touch events for driver cards
+    - Add touch event handlers (onTouchStart, onTouchEnd) to DriverCard component
+    - Implement tap to expand/collapse driver card functionality
+    - Ensure minimum touch target size of 44x44px for all interactive elements
+    - Add touch-action CSS properties to prevent unwanted gestures
+    - _Requirements: 12.1_
+  
+  - [x] 17.3 Integrate Material Design components
+    - Install Material-UI (MUI) library for React
+    - Replace custom SearchBox with Material-UI TextField component
+    - Apply Material Design elevation system to driver cards
+    - Implement Material ripple effects on interactive elements
+    - Update color scheme to use Material Design color system with F1 brand colors
+    - Apply Material Design typography scale
+    - _Requirements: 12.3_
+  
+  - [x] 17.4 Optimize mobile performance
+    - Implement lazy loading for driver images using Intersection Observer
+    - Add loading="lazy" attribute to img elements
+    - Optimize image sizes for mobile devices (responsive images with srcset)
+    - Reduce animation complexity for lower-end mobile devices
+    - Implement virtual scrolling for driver list if performance issues arise
+    - _Requirements: 12.1_
+  
+  - [x] 17.5 Add mobile-specific UI adaptations
+    - Implement safe area insets for iOS notched devices
+    - Add viewport meta tag with proper scaling settings
+    - Create full-screen search overlay for mobile devices
+    - Optimize header layout for mobile screens
+    - Ensure smooth transitions follow Material Design motion principles
+    - Test landscape and portrait orientations
+    - _Requirements: 12.1, 12.3_
+  
+  - [x] 17.6 Write mobile interaction tests
+    - Write tests for touch event handlers
+    - Test PWA installation and offline functionality
+    - Test Material Design component integration
+    - Verify responsive layouts on various mobile screen sizes
+    - _Requirements: 12.1, 12.2, 12.3_
+
+- [x] 18. Implement Wikimedia image fetching and optimization
+
+
+
+
+
+
+  - [x] 18.1 Create WikimediaService for image fetching
+
+    - Create wikimediaService.js in src/services/
+    - Implement fetchDriverImage function to query Wikimedia Commons API
+    - Implement getImageUrl function to construct direct image URLs
+    - Add error handling for API failures and missing images
+    - Handle API rate limiting appropriately
+    - _Requirements: 13.1_
+  
+
+  - [x] 18.2 Create ImageService for optimization and caching
+
+    - Create imageService.js in src/services/
+    - Implement optimizeImage function using Canvas API to resize images to 440px width
+    - Maintain aspect ratio during image optimization
+    - Implement cacheImage function using Cache API to store optimized images
+    - Implement getCachedImage function to retrieve cached images
+    - Implement getDriverImage orchestration function (check cache → fetch → optimize → cache → return)
+    - _Requirements: 13.2, 13.3, 13.4, 13.5_
+  
+  - [x] 18.3 Update DriverCard to use image service
+
+
+    - Import imageService into DriverCard component
+    - Add optimizedImageUrl and imageLoading state variables
+    - Call getDriverImage on component mount with driver ID and name
+    - Display loading state while image is being fetched/optimized
+    - Update image src to use optimized/cached image URL
+    - Maintain fallback to placeholder on errors
+    - _Requirements: 13.1, 13.2, 13.3, 13.4, 13.5_
+  
+  - [x] 18.4 Write property test for image optimization dimensions
+
+
+
+
+
+
+    - **Property 33: Image optimization dimensions**
+    - **Validates: Requirements 13.2**
+    - Generate random images with various dimensions
+    - Verify optimized images have 440px width
+    - Verify aspect ratio is maintained
+    - Run minimum 100 iterations
+  
+  - [x] 18.5 Write property test for cache behavior
+
+
+
+
+
+
+    - **Property 36: Cache usage over re-fetching**
+    - **Validates: Requirements 13.5**
+    - Test that cached images are used without re-fetching
+    - Verify cache updates occur for new images
+    - Test cache retrieval for existing images
+    - Run minimum 100 iterations
+  
+  - [x] 18.6 Write unit tests for image services
+
+
+
+
+
+
+    - Write tests for wikimediaService API integration
+    - Write tests for imageService optimization logic
+    - Write tests for cache storage and retrieval
+    - Test error handling for failed fetches and optimizations
+    - _Requirements: 13.1, 13.2, 13.3, 13.4, 13.5_
+
+- [x] 19. Final checkpoint - Ensure all tests pass
+  - Ensure all tests pass, ask the user if questions arise.
+
+- [x] 20. Implement racing team car image feature
+
+
+
+
+  - [x] 20.1 Update driver data model with team car information
+
+
+    - Add teamId field to driver data structure
+    - Add currentYear field to driver data structure
+    - Add teamCarImageUrl field to driver data structure (optional)
+    - Update drivers.json with team IDs and current year information
+    - _Requirements: 14.1, 14.2_
+  
+  - [x] 20.2 Extend WikimediaService for team car images
+
+
+    - Add fetchTeamCarImage function to wikimediaService.js
+    - Implement search logic for racing team car images using team name and year
+    - Handle cases where no suitable car image is found (return null)
+    - Add error handling for API failures
+    - _Requirements: 14.2_
+  
+  - [x] 20.3 Extend ImageService for team car image optimization
+
+
+    - Add getTeamCarImage function to imageService.js
+    - Implement cache key format for car images: `car-image-${teamId}-${year}`
+    - Reuse existing optimization logic for 440px width
+    - Handle null returns for unavailable car images
+    - _Requirements: 14.2, 14.3_
+  
+  - [x] 20.4 Update DriverCard component to display team car images
+
+
+    - Add carImageError, optimizedCarImageUrl, and carImageLoading state variables
+    - Call getTeamCarImage on component mount with team ID, team name, and year
+    - Display car image in expanded view alongside driver information
+    - Handle loading state for car images
+    - Gracefully handle missing car images (omit section or show placeholder)
+    - Handle failed car image loads without disrupting layout
+    - _Requirements: 14.1, 14.4, 14.5_
+  
+
+  - [x] 20.5 Add styling for team car images
+
+    - Add CSS styles for car image display in expanded view
+    - Position car image appropriately within the card layout
+    - Ensure responsive sizing for car images across breakpoints
+    - Add smooth fade-in animation for car images on hover
+    - _Requirements: 14.1_
+  
+  - [ ]* 20.6 Write property test for team car image display
+    - **Property 37: Racing team car image display on hover**
+    - **Validates: Requirements 14.1**
+    - Generate random driver data with and without car images
+    - Verify car images display in expanded view when available
+    - Run minimum 100 iterations
+  
+  - [ ]* 20.7 Write property test for team car image optimization
+    - **Property 39: Team car image optimization dimensions**
+    - **Validates: Requirements 14.3**
+    - Generate random car images with various dimensions
+    - Verify optimized car images have 440px width
+    - Verify aspect ratio is maintained
+    - Run minimum 100 iterations
+  
+  - [ ]* 20.8 Write unit tests for team car image services
+    - Write tests for fetchTeamCarImage in wikimediaService
+    - Write tests for getTeamCarImage in imageService
+    - Test graceful handling of unavailable car images
+    - Test error handling for failed car image loads
+    - _Requirements: 14.2, 14.3, 14.4, 14.5_
+
+- [ ] 21. Final checkpoint - Ensure all tests pass including new car image features
+  - Ensure all tests pass, ask the user if questions arise.

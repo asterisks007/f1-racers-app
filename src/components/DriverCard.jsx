@@ -1,6 +1,7 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import StandingsDisplay from './StandingsDisplay';
 import ChampionBadge from './ChampionBadge';
+import { getTeamCarImage } from '../services/imageService';
 import './DriverCard.css';
 
 const DriverCard = ({ driver }) => {
@@ -8,6 +9,8 @@ const DriverCard = ({ driver }) => {
     name,
     nationality,
     team,
+    teamId,
+    currentYear,
     isWorldChampion,
     championshipYears,
     currentStanding,
@@ -15,12 +18,47 @@ const DriverCard = ({ driver }) => {
   } = driver;
 
   const [imageError, setImageError] = useState(false);
+  const [carImageError, setCarImageError] = useState(false);
+  const [optimizedCarImageUrl, setOptimizedCarImageUrl] = useState(null);
+  const [carImageLoading, setCarImageLoading] = useState(true);
   const cardRef = useRef(null);
   const placeholderImage = '/driver-placeholder.svg';
 
   const handleImageError = () => {
     setImageError(true);
   };
+
+  const handleCarImageError = () => {
+    setCarImageError(true);
+  };
+
+  // Fetch and optimize team car image on component mount
+  useEffect(() => {
+    const fetchCarImage = async () => {
+      if (!teamId || !team || !currentYear) {
+        setCarImageLoading(false);
+        return;
+      }
+
+      try {
+        setCarImageLoading(true);
+        const carImageUrl = await getTeamCarImage(teamId, team, currentYear);
+        
+        if (carImageUrl) {
+          setOptimizedCarImageUrl(carImageUrl);
+        } else {
+          setCarImageError(true);
+        }
+      } catch (error) {
+        console.error('Error fetching team car image:', error);
+        setCarImageError(true);
+      } finally {
+        setCarImageLoading(false);
+      }
+    };
+
+    fetchCarImage();
+  }, [teamId, team, currentYear]);
 
   const handleMouseEnter = () => {
     if (!cardRef.current) return;
@@ -119,6 +157,21 @@ const DriverCard = ({ driver }) => {
             <span className="info-value">{team}</span>
           </p>
         </div>
+
+        {/* Team Car Image */}
+        {!carImageLoading && optimizedCarImageUrl && !carImageError && (
+          <div className="team-car-section">
+            <h3 className="car-section-title">Team Car</h3>
+            <div className="team-car-image-container">
+              <img 
+                src={optimizedCarImageUrl}
+                alt={`${team} ${currentYear} F1 car`}
+                className="team-car-image"
+                onError={handleCarImageError}
+              />
+            </div>
+          </div>
+        )}
 
         {isWorldChampion && (
           <ChampionBadge championshipYears={championshipYears} />
