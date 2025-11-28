@@ -1,0 +1,73 @@
+<svg width="1242" height="2688" viewBox="0 0 1242 2688" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background - F1 Red gradient -->
+  <defs>
+    <linearGradient id="bgGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#E10600;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#A00400;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <rect width="1242" height="2688" fill="url(#bgGradient)"/>
+  
+  <!-- Center content -->
+  <g transform="translate(621, 1344)">
+    <!-- Large Racing Helmet Icon -->
+    <g transform="scale(1.5)">
+      <!-- Helmet main body -->
+      <ellipse cx="0" cy="-30" rx="200" ry="220" fill="#1A1A1A"/>
+      
+      <!-- Helmet visor -->
+      <rect x="-220" y="-50" width="440" height="80" rx="40" fill="white"/>
+      
+      <!-- Visor reflection -->
+      <rect x="-220" y="-50" width="440" height="30" rx="15" fill="#F5F5F5" opacity="0.8"/>
+      
+      <!-- Helmet chin guard -->
+      <ellipse cx="0" cy="140" rx="140" ry="60" fill="#1A1A1A"/>
+      
+      <!-- Racing stripes -->
+      <rect x="-30" y="-220" width="60" height="180" fill="white"/>
+    </g>
+    
+    <!-- App Title -->
+    <text x="0" y="450" font-family="Arial, sans-serif" font-size="96" font-weight="900" fill="white" text-anchor="middle">F1 RACERS</text>
+    
+    <!-- Subtitle -->
+    <text x="0" y="550" font-family="Arial, sans-serif" font-size="48" font-weight="400" fill="white" text-anchor="middle" opacity="0.9">Driver Standings</text>
+  </g>
+  
+  <!-- Bottom decorative element - checkered flag pattern -->
+  <g transform="translate(0, 2400)">
+    <rect x="0" y="0" width="80" height="80" fill="white"/>
+    <rect x="80" y="0" width="80" height="80" fill="#1A1A1A"/>
+    <rect x="160" y="0" width="80" height="80" fill="white"/>
+    <rect x="240" y="0" width="80" height="80" fill="#1A1A1A"/>
+    <rect x="320" y="0" width="80" height="80" fill="white"/>
+    <rect x="400" y="0" width="80" height="80" fill="#1A1A1A"/>
+    <rect x="480" y="0" width="80" height="80" fill="white"/>
+    <rect x="560" y="0" width="80" height="80" fill="#1A1A1A"/>
+    <rect x="640" y="0" width="80" height="80" fill="white"/>
+    <rect x="720" y="0" width="80" height="80" fill="#1A1A1A"/>
+    <rect x="800" y="0" width="80" height="80" fill="white"/>
+    <rect x="880" y="0" width="80" height="80" fill="#1A1A1A"/>
+    <rect x="960" y="0" width="80" height="80" fill="white"/>
+    <rect x="1040" y="0" width="80" height="80" fill="#1A1A1A"/>
+    <rect x="1120" y="0" width="80" height="80" fill="white"/>
+    
+    <rect x="0" y="80" width="80" height="80" fill="#1A1A1A"/>
+    <rect x="80" y="80" width="80" height="80" fill="white"/>
+    <rect x="160" y="80" width="80" height="80" fill="#1A1A1A"/>
+    <rect x="240" y="80" width="80" height="80" fill="white"/>
+    <rect x="320" y="80" width="80" height="80" fill="#1A1A1A"/>
+    <rect x="400" y="80" width="80" height="80" fill="white"/>
+    <rect x="480" y="80" width="80" height="80" fill="#1A1A1A"/>
+    <rect x="560" y="80" width="80" height="80" fill="white"/>
+    <rect x="640" y="80" width="80" height="80" fill="#1A1A1A"/>
+    <rect x="720" y="80" width="80" height="80" fill="white"/>
+    <rect x="800" y="80" width="80" height="80" fill="#1A1A1A"/>
+    <rect x="880" y="80" width="80" height="80" fill="white"/>
+    <rect x="960" y="80" width="80" height="80" fill="#1A1A1A"/>
+    <rect x="1040" y="80" width="80" height="80" fill="white"/>
+    <rect x="1120" y="80" width="80" height="80" fill="#1A1A1A"/>
+  </g>
+</svg>

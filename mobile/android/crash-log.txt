@@ -1,0 +1,7 @@
+11-28 23:18:12.678   255   755 W libc    : Unable to set property "ctl.interface_start" to "aidl/activity": PROP_ERROR_HANDLE_CONTROL_MESSAGE (0x20)
+11-28 23:18:12.982   717   756 W GFXSTREAM: [GLESv2Validation.cpp(1461)] error cap: 0xde1 is invalid.
+11-28 23:18:12.982   717   756 E GFXSTREAM: [GL2Encoder.cpp(5159)] GL error 0x500 condition [!GLESv2Validation::allowedEnable(ctx->majorVersion(), ctx->minorVersion(), what)].
+11-28 23:18:13.686   255   775 W libc    : Unable to set property "ctl.interface_start" to "aidl/activity": PROP_ERROR_HANDLE_CONTROL_MESSAGE (0x20)
+11-28 23:18:13.958   547   547 I AconfigPackage: com.android.crashrecovery.flags is mapped to com.android.crashrecovery
+11-28 23:18:14.017   547   547 E FeatureFlagsImplExport: android.os.flagging.AconfigStorageReadException: ERROR_PACKAGE_NOT_FOUND: package android.xr cannot be found on the device
+11-28 23:18:14.694   255   777 W libc    : Unable to set property "ctl.interface_start" to "aidl/activity": PROP_ERROR_HANDLE_CONTROL_MESSAGE (0x20)

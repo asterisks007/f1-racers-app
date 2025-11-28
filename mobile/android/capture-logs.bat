@@ -1,0 +1,9 @@
+@echo off
+echo Clearing logcat...
+adb logcat -c
+echo Launching app...
+adb shell am start -n com.f1racers.mobile/.MainActivity
+timeout /t 3
+echo Capturing crash logs...
+adb logcat -d | findstr /i "AndroidRuntime FATAL crash f1racers Exception Error" > crash-log.txt
+type crash-log.txt

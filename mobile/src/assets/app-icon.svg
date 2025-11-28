@@ -1,0 +1,28 @@
+<svg width="1024" height="1024" viewBox="0 0 1024 1024" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background - F1 Red -->
+  <rect width="1024" height="1024" fill="#E10600" rx="180"/>
+  
+  <!-- White circle background for contrast -->
+  <circle cx="512" cy="512" r="380" fill="white"/>
+  
+  <!-- Stylized F1 Racing Helmet -->
+  <g transform="translate(512, 512)">
+    <!-- Helmet main body -->
+    <ellipse cx="0" cy="-30" rx="200" ry="220" fill="#1A1A1A"/>
+    
+    <!-- Helmet visor - iconic horizontal stripe -->
+    <rect x="-220" y="-50" width="440" height="80" rx="40" fill="#E10600"/>
+    
+    <!-- Visor reflection/shine -->
+    <rect x="-220" y="-50" width="440" height="30" rx="15" fill="#FF3333" opacity="0.6"/>
+    
+    <!-- Helmet chin guard -->
+    <ellipse cx="0" cy="140" rx="140" ry="60" fill="#1A1A1A"/>
+    
+    <!-- Racing stripes -->
+    <rect x="-30" y="-220" width="60" height="180" fill="white"/>
+    
+    <!-- F1 Text -->
+    <text x="0" y="280" font-family="Arial, sans-serif" font-size="120" font-weight="900" fill="#1A1A1A" text-anchor="middle">F1</text>
+  </g>
+</svg>
