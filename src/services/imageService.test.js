@@ -1030,3 +1030,402 @@ describe('Unit Tests: ImageService', () => {
     });
   });
 });
+
+
+/**
+ * Unit Tests: Team Car Image Services
+ * Tests for fetchTeamCarImage, getTeamCarImage, and related functionality
+ * Validates: Requirements 14.2, 14.3, 14.4, 14.5
+ */
+
+describe('Unit Tests: Team Car Image Services', () => {
+  let mockCache;
+  let mockCanvas;
+  let mockContext;
+
+  beforeEach(() => {
+    // Mock cache API
+    mockCache = new Map();
+    global.caches = {
+      open: vi.fn().mockResolvedValue({
+        match: vi.fn((key) => {
+          const response = mockCache.get(key);
+          return Promise.resolve(response || null);
+        }),
+        put: vi.fn((key, response) => {
+          mockCache.set(key, response);
+          return Promise.resolve();
+        }),
+        has: vi.fn((key) => mockCache.has(key))
+      })
+    };
+
+    // Mock canvas
+    mockContext = {
+      drawImage: vi.fn()
+    };
+
+    mockCanvas = {
+      width: 0,
+      height: 0,
+      getContext: vi.fn(() => mockContext),
+      toBlob: vi.fn((callback) => {
+        const blob = new Blob(['mock-car-image'], { type: 'image/jpeg' });
+        queueMicrotask(() => callback(blob));
+      })
+    };
+
+    document.createElement = vi.fn((tagName) => {
+      if (tagName === 'canvas') {
+        return mockCanvas;
+      }
+      return {};
+    });
+
+    // Mock Image
+    global.Image = class {
+      constructor() {
+        this.crossOrigin = '';
+        this.onload = null;
+        this.onerror = null;
+        this._src = '';
+        this.width = 800;
+        this.height = 600;
+      }
+      
+      set src(value) {
+        this._src = value;
+        queueMicrotask(() => {
+          if (this.onload) {
+            this.onload();
+          }
+        });
+      }
+      
+      get src() {
+        return this._src;
+      }
+    };
+
+    // Mock fetch for Wikimedia API
+    global.fetch = vi.fn();
+  });
+
+  afterEach(() => {
+    vi.restoreAllMocks();
+  });
+
+  describe('fetchTeamCarImage', () => {
+    it('should fetch team car image from Wikimedia Commons', async () => {
+      const { fetchTeamCarImage } = await import('./wikimediaService.js');
+      
+      // Mock search response
+      global.fetch.mockResolvedValueOnce({
+        ok: true,
+        json: async () => ({
+          query: {
+            search: [
+              { title: 'File:Red_Bull_RB19_2023.jpg' }
+            ]
+          }
+        })
+      });
+
+      // Mock image info response
+      global.fetch.mockResolvedValueOnce({
+        ok: true,
+        json: async () => ({
+          query: {
+            pages: {
+              '12345': {
+                imageinfo: [{
+                  thumburl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/test-car.jpg/500px-test-car.jpg',
+                  url: 'https://upload.wikimedia.org/wikipedia/commons/test-car.jpg'
+                }]
+              }
+            }
+          }
+        })
+      });
+
+      const result = await fetchTeamCarImage('Red Bull Racing', 2023);
+
+      expect(result).toBe('https://upload.wikimedia.org/wikipedia/commons/thumb/test-car.jpg/500px-test-car.jpg');
+      expect(global.fetch).toHaveBeenCalledTimes(2);
+    });
+
+    it('should return null when no car images are found', async () => {
+      const { fetchTeamCarImage } = await import('./wikimediaService.js');
+      
+      global.fetch.mockResolvedValueOnce({
+        ok: true,
+        json: async () => ({
+          query: {
+            search: []
+          }
+        })
+      });
+
+      const result = await fetchTeamCarImage('Unknown Team', 2023);
+
+      expect(result).toBeNull();
+    });
+
+    it('should handle API request failures gracefully', async () => {
+      const { fetchTeamCarImage } = await import('./wikimediaService.js');
+      
+      global.fetch.mockResolvedValueOnce({
+        ok: false,
+        status: 500
+      });
+
+      const result = await fetchTeamCarImage('Ferrari', 2023);
+
+      expect(result).toBeNull();
+    });
+
+    it('should handle network errors gracefully', async () => {
+      const { fetchTeamCarImage } = await import('./wikimediaService.js');
+      
+      global.fetch.mockRejectedValueOnce(new Error('Network error'));
+
+      const result = await fetchTeamCarImage('Mercedes', 2023);
+
+      expect(result).toBeNull();
+    });
+  });
+
+  describe('fetchTeamCarImageWithRetry', () => {
+    it('should return result on first successful attempt', async () => {
+      const { fetchTeamCarImageWithRetry } = await import('./wikimediaService.js');
+      
+      // First attempt succeeds - search response
+      global.fetch.mockResolvedValueOnce({
+        ok: true,
+        json: async () => ({
+          query: {
+            search: [{ title: 'File:McLaren_MCL60_2023.jpg' }]
+          }
+        })
+      });
+
+      // Image info response
+      global.fetch.mockResolvedValueOnce({
+        ok: true,
+        json: async () => ({
+          query: {
+            pages: {
+              '67890': {
+                imageinfo: [{
+                  thumburl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/mclaren.jpg/500px-mclaren.jpg'
+                }]
+              }
+            }
+          }
+        })
+      });
+
+      const result = await fetchTeamCarImageWithRetry('McLaren', 2023, 2);
+
+      expect(result).toBe('https://upload.wikimedia.org/wikipedia/commons/thumb/mclaren.jpg/500px-mclaren.jpg');
+    });
+
+    it('should return null after all retry attempts fail', async () => {
+      const { fetchTeamCarImageWithRetry } = await import('./wikimediaService.js');
+      
+      global.fetch.mockRejectedValue(new Error('Persistent error'));
+
+      const result = await fetchTeamCarImageWithRetry('Test Team', 2023, 2);
+
+      expect(result).toBeNull();
+    });
+  });
+
+  describe('getTeamCarImage', () => {
+    it('should return cached car image if available', async () => {
+      const { getTeamCarImage } = await import('./imageService.js');
+      
+      const teamId = 'ferrari';
+      const year = 2023;
+      const mockBlob = new Blob(['cached-car-image'], { type: 'image/jpeg' });
+      const mockResponse = new Response(mockBlob);
+      
+      mockCache.set(`car-image-${teamId}-${year}`, mockResponse);
+
+      const result = await getTeamCarImage(teamId, 'Ferrari', year);
+
+      expect(result).toBeTruthy();
+      expect(result).toContain('data:image/jpeg;base64');
+    });
+
+    it('should fetch, optimize, and cache car image when not in cache', async () => {
+      const { getTeamCarImage } = await import('./imageService.js');
+      
+      // Mock Wikimedia fetch - search response
+      global.fetch.mockResolvedValueOnce({
+        ok: true,
+        json: async () => ({
+          query: {
+            search: [{ title: 'File:Mercedes_W14_2023.jpg' }]
+          }
+        })
+      });
+
+      // Mock image info response
+      global.fetch.mockResolvedValueOnce({
+        ok: true,
+        json: async () => ({
+          query: {
+            pages: {
+              '11111': {
+                imageinfo: [{
+                  thumburl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/mercedes.jpg/500px-mercedes.jpg'
+                }]
+              }
+            }
+          }
+        })
+      });
+
+      const result = await getTeamCarImage('mercedes', 'Mercedes', 2023);
+
+      expect(result).toBeTruthy();
+      expect(result).toContain('data:image/jpeg;base64');
+      expect(mockCache.has('car-image-mercedes-2023')).toBe(true);
+    });
+
+    it('should return null when car image is unavailable', async () => {
+      const { getTeamCarImage } = await import('./imageService.js');
+      
+      // Mock Wikimedia fetch returning no results
+      global.fetch.mockResolvedValueOnce({
+        ok: true,
+        json: async () => ({
+          query: {
+            search: []
+          }
+        })
+      });
+
+      const result = await getTeamCarImage('unknown-team', 'Unknown Team', 2023);
+
+      expect(result).toBeNull();
+    });
+
+    it('should handle errors gracefully and return null', async () => {
+      const { getTeamCarImage } = await import('./imageService.js');
+      
+      global.fetch.mockRejectedValue(new Error('Network failure'));
+
+      const result = await getTeamCarImage('aston-martin', 'Aston Martin', 2023);
+
+      expect(result).toBeNull();
+    });
+  });
+
+  describe('Team Car Image Caching', () => {
+    it('should cache team car images with correct key format', async () => {
+      const { cacheTeamCarImage } = await import('./imageService.js');
+      
+      const teamId = 'red-bull-racing';
+      const year = 2023;
+      const imageBlob = new Blob(['test-car-image'], { type: 'image/jpeg' });
+
+      await cacheTeamCarImage(teamId, year, imageBlob);
+
+      const cacheKey = `car-image-${teamId}-${year}`;
+      expect(mockCache.has(cacheKey)).toBe(true);
+    });
+
+    it('should retrieve cached team car images', async () => {
+      const { getCachedTeamCarImage } = await import('./imageService.js');
+      
+      const teamId = 'mclaren';
+      const year = 2023;
+      const mockBlob = new Blob(['cached-car'], { type: 'image/jpeg' });
+      const mockResponse = new Response(mockBlob);
+      
+      mockCache.set(`car-image-${teamId}-${year}`, mockResponse);
+
+      const result = await getCachedTeamCarImage(teamId, year);
+
+      expect(result).toBeTruthy();
+      expect(result).toContain('data:image/jpeg;base64');
+    });
+
+    it('should return null when team car image is not cached', async () => {
+      const { getCachedTeamCarImage } = await import('./imageService.js');
+      
+      const result = await getCachedTeamCarImage('non-existent-team', 2023);
+
+      expect(result).toBeNull();
+    });
+  });
+
+  describe('Team Car Image Error Handling', () => {
+    it('should handle missing team car images without disrupting layout', async () => {
+      const { getTeamCarImage } = await import('./imageService.js');
+      
+      // Simulate no car image found
+      global.fetch.mockResolvedValueOnce({
+        ok: true,
+        json: async () => ({
+          query: {
+            search: []
+          }
+        })
+      });
+
+      const result = await getTeamCarImage('williams', 'Williams', 1994);
+
+      // Should return null for graceful degradation
+      expect(result).toBeNull();
+    });
+
+    it('should handle failed car image loads gracefully', async () => {
+      const { getTeamCarImage } = await import('./imageService.js');
+      
+      // Mock fetch failure
+      global.fetch.mockRejectedValueOnce(new Error('Load failed'));
+
+      const result = await getTeamCarImage('alfa-romeo', 'Alfa Romeo', 2021);
+
+      // Should return null without throwing
+      expect(result).toBeNull();
+    });
+
+    it('should optimize team car images to 440px width', async () => {
+      const { getTeamCarImage } = await import('./imageService.js');
+      
+      // Mock successful fetch
+      global.fetch.mockResolvedValueOnce({
+        ok: true,
+        json: async () => ({
+          query: {
+            search: [{ title: 'File:Test_Car.jpg' }]
+          }
+        })
+      });
+
+      global.fetch.mockResolvedValueOnce({
+        ok: true,
+        json: async () => ({
+          query: {
+            pages: {
+              '99999': {
+                imageinfo: [{
+                  thumburl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/test.jpg/500px-test.jpg'
+                }]
+              }
+            }
+          }
+        })
+      });
+
+      await getTeamCarImage('test-team', 'Test Team', 2023);
+
+      // Verify canvas was set to 440px width
+      expect(mockCanvas.width).toBe(440);
+    });
+  });
+});

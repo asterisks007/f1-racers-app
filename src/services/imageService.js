@@ -157,3 +157,108 @@ export const getDriverImage = async (driverId, driverName) => {
     return null;
   }
 };
+
+/**
+ * Stores an optimized team car image in the browser cache
+ * @param {string} teamId - Unique team identifier
+ * @param {number} year - Year of the car
+ * @param {Blob} imageBlob - Optimized image blob
+ * @returns {Promise<void>}
+ */
+export const cacheTeamCarImage = async (teamId, year, imageBlob) => {
+  try {
+    const cache = await caches.open(CACHE_NAME);
+    const cacheKey = `car-image-${teamId}-${year}`;
+    
+    // Create a response from the blob
+    const response = new Response(imageBlob, {
+      headers: {
+        'Content-Type': 'image/jpeg',
+        'Cache-Control': 'max-age=31536000' // Cache for 1 year
+      }
+    });
+    
+    // Store in cache
+    await cache.put(cacheKey, response);
+  } catch (error) {
+    console.error(`Error caching team car image for ${teamId} ${year}:`, error);
+    throw error;
+  }
+};
+
+/**
+ * Retrieves a cached team car image
+ * @param {string} teamId - Unique team identifier
+ * @param {number} year - Year of the car
+ * @returns {Promise<string|null>} Promise that resolves to data URL or null if not cached
+ */
+export const getCachedTeamCarImage = async (teamId, year) => {
+  try {
+    const cache = await caches.open(CACHE_NAME);
+    const cacheKey = `car-image-${teamId}-${year}`;
+    
+    const response = await cache.match(cacheKey);
+    
+    if (!response) {
+      return null;
+    }
+    
+    // Convert response to blob
+    const blob = await response.blob();
+    
+    // Convert blob to data URL
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onloadend = () => resolve(reader.result);
+      reader.onerror = reject;
+      reader.readAsDataURL(blob);
+    });
+  } catch (error) {
+    console.error(`Error retrieving cached team car image for ${teamId} ${year}:`, error);
+    return null;
+  }
+};
+
+/**
+ * Main orchestration function to get team car image
+ * Checks cache first, then fetches from Wikimedia, optimizes, caches, and returns
+ * @param {string} teamId - Unique team identifier
+ * @param {string} teamName - Full name of the team
+ * @param {number} year - Year of the car
+ * @returns {Promise<string|null>} Promise that resolves to image data URL or null
+ */
+export const getTeamCarImage = async (teamId, teamName, year) => {
+  try {
+    // Step 1: Check cache first
+    const cachedImage = await getCachedTeamCarImage(teamId, year);
+    if (cachedImage) {
+      return cachedImage;
+    }
+    
+    // Step 2: Fetch from Wikimedia
+    const { fetchTeamCarImageWithRetry } = await import('./wikimediaService.js');
+    const imageUrl = await fetchTeamCarImageWithRetry(teamName, year);
+    
+    if (!imageUrl) {
+      // No image found - return null for graceful degradation
+      return null;
+    }
+    
+    // Step 3: Optimize the image
+    const optimizedBlob = await optimizeImage(imageUrl);
+    
+    // Step 4: Cache the optimized image
+    await cacheTeamCarImage(teamId, year, optimizedBlob);
+    
+    // Step 5: Convert to data URL and return
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onloadend = () => resolve(reader.result);
+      reader.onerror = reject;
+      reader.readAsDataURL(optimizedBlob);
+    });
+  } catch (error) {
+    console.error(`Error getting team car image for ${teamName} ${year}:`, error);
+    return null;
+  }
+};

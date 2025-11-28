@@ -344,3 +344,80 @@
     height: 30px;
   }
 }
+
+/* Team Car Image Styles */
+.team-car-container {
+  width: 100%;
+  margin-top: 0.75rem;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.driver-card:hover .team-car-container,
+.driver-card.expanded .team-car-container {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.team-car-image {
+  width: 100%;
+  height: auto;
+  max-height: 150px;
+  object-fit: contain;
+  border-radius: 8px;
+  border: 2px solid #333;
+  background: rgba(0, 0, 0, 0.3);
+  padding: 0.5rem;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+}
+
+.team-car-image:hover {
+  border-color: #e10600;
+  box-shadow: 0 6px 16px rgba(225, 6, 0, 0.3);
+  transform: scale(1.02);
+}
+
+.car-image-loading-placeholder {
+  width: 100%;
+  height: 120px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 8px;
+  border: 2px solid #333;
+}
+
+/* Responsive sizing for team car images */
+@media (max-width: 768px) {
+  .team-car-image {
+    max-height: 130px;
+  }
+  
+  .car-image-loading-placeholder {
+    height: 100px;
+  }
+}
+
+@media (max-width: 480px) {
+  .team-car-image {
+    max-height: 110px;
+  }
+  
+  .car-image-loading-placeholder {
+    height: 90px;
+  }
+}
+
+/* Reduced motion for team car images */
+.driver-card.reduced-motion .team-car-container {
+  transition-duration: 0.2s !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .team-car-container {
+    transition-duration: 0.1s !important;
+  }
+}

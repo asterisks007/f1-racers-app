@@ -516,9 +516,97 @@
     - _Requirements: 13.1, 13.2, 13.3, 13.4, 13.5_
 
 - [x] 19. Final checkpoint - Ensure all tests pass
+  - Ensure all tests pass, ask the user if questions arise.
+
+- [x] 20. Implement racing team car image feature
 
 
 
 
 
+
+
+  - [x] 20.1 Update driver data model with team car information
+
+
+
+
+    - Add teamId field to driver data structure
+    - Add currentYear field to driver data structure
+    - Add teamCarImageUrl field to driver data structure (optional)
+    - Update drivers.json with team IDs and current year information
+    - _Requirements: 14.1, 14.2_
+  
+  - [x] 20.2 Extend WikimediaService for team car images
+
+
+
+
+    - Add fetchTeamCarImage function to wikimediaService.js
+    - Implement search logic for racing team car images using team name and year
+    - Handle cases where no suitable car image is found (return null)
+    - Add error handling for API failures
+    - _Requirements: 14.2_
+  
+  - [x] 20.3 Extend ImageService for team car image optimization
+
+
+
+
+    - Add getTeamCarImage function to imageService.js
+    - Implement cache key format for car images: `car-image-${teamId}-${year}`
+    - Reuse existing optimization logic for 440px width
+    - Handle null returns for unavailable car images
+    - _Requirements: 14.2, 14.3_
+  
+  - [x] 20.4 Update DriverCard component to display team car images
+
+
+
+
+    - Add carImageError, optimizedCarImageUrl, and carImageLoading state variables
+    - Call getTeamCarImage on component mount with team ID, team name, and year
+    - Display car image in expanded view alongside driver information
+    - Handle loading state for car images
+    - Gracefully handle missing car images (omit section or show placeholder)
+    - Handle failed car image loads without disrupting layout
+    - _Requirements: 14.1, 14.4, 14.5_
+  
+
+  - [x] 20.5 Add styling for team car images
+
+
+
+    - Add CSS styles for car image display in expanded view
+    - Position car image appropriately within the card layout
+    - Ensure responsive sizing for car images across breakpoints
+    - Add smooth fade-in animation for car images on hover
+    - _Requirements: 14.1_
+  
+  - [ ]* 20.6 Write property test for team car image display
+    - **Property 37: Racing team car image display on hover**
+    - **Validates: Requirements 14.1**
+    - Generate random driver data with and without car images
+    - Verify car images display in expanded view when available
+    - Run minimum 100 iterations
+  
+  - [ ]* 20.7 Write property test for team car image optimization
+    - **Property 39: Team car image optimization dimensions**
+    - **Validates: Requirements 14.3**
+    - Generate random car images with various dimensions
+    - Verify optimized car images have 440px width
+    - Verify aspect ratio is maintained
+    - Run minimum 100 iterations
+  
+  - [x] 20.8 Write unit tests for team car image services
+
+
+
+    - Write tests for fetchTeamCarImage in wikimediaService
+    - Write tests for getTeamCarImage in imageService
+    - Test graceful handling of unavailable car images
+    - Test error handling for failed car image loads
+    - _Requirements: 14.2, 14.3, 14.4, 14.5_
+
+- [ ] 21. Final checkpoint - Ensure all tests pass including new car image features
   - Ensure all tests pass, ask the user if questions arise.

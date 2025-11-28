@@ -91,11 +91,15 @@ src/
   - `nationality`: String
   - `team`: String (current or last team)
   - `imageUrl`: String (URL to driver picture)
+  - `teamCarImageUrl`: String (URL to racing team car picture, optional)
 
 **State**:
 - `imageError`: Boolean to track image loading failures
 - `optimizedImageUrl`: String to store the optimized/cached image URL
 - `imageLoading`: Boolean to track image optimization progress
+- `carImageError`: Boolean to track car image loading failures
+- `optimizedCarImageUrl`: String to store the optimized/cached car image URL
+- `carImageLoading`: Boolean to track car image optimization progress
 
 **Layout Structure**:
 - **Compact View** (Always Visible):
@@ -111,6 +115,7 @@ src/
   - Additional details fade in with opacity transition
   - Nationality and team information
   - Champion badge (if applicable)
+  - Racing team car image (if available)
   - Card expands to 400px minimum height
   - Name grows to 1.25rem and changes to red color
   - Automatic row scrolling to ensure full visibility
@@ -119,12 +124,14 @@ src/
 - Display driver information in compact format by default
 - Expand to show full details on hover with smooth transitions
 - Fetch and display optimized driver images from cache or Wikimedia
+- Fetch and display optimized racing team car images from cache or Wikimedia
 - Render driver picture with fallback to placeholder SVG
+- Render racing team car image with graceful handling of missing images
 - Show championship badge only in expanded state
 - Display standings information in compact state
-- Handle image loading errors gracefully
-- Trigger image optimization and caching on mount
-- Display loading state while image is being fetched/optimized
+- Handle image loading errors gracefully for both driver and car images
+- Trigger image optimization and caching on mount for both image types
+- Display loading state while images are being fetched/optimized
 - Animate transitions using cubic-bezier(0.4, 0, 0.2, 1) timing
 - Apply glow effects and scale transformations on hover
 - Detect row position and trigger automatic scrolling when needed
@@ -156,7 +163,7 @@ src/
 ## Image Management Services
 
 ### WikimediaService
-**Purpose**: Fetch driver images from Wikimedia Commons
+**Purpose**: Fetch driver and racing team car images from Wikimedia Commons
 
 **Functions**:
 ```javascript
@@ -164,6 +171,13 @@ export const fetchDriverImage = async (driverName) => {
   // Returns Promise<string> (image URL)
   // Searches Wikimedia Commons for driver image
   // Uses Wikimedia API to find best quality image
+}
+
+export const fetchTeamCarImage = async (teamName, year) => {
+  // Returns Promise<string | null> (image URL or null)
+  // Searches Wikimedia Commons for racing team car image
+  // Uses team name and year to find relevant car image
+  // Returns null if no suitable image found
 }
 
 export const getImageUrl = (filename) => {
@@ -174,6 +188,7 @@ export const getImageUrl = (filename) => {
 
 **Responsibilities**:
 - Query Wikimedia Commons API for driver images
+- Query Wikimedia Commons API for racing team car images
 - Handle API authentication and rate limiting
 - Parse API responses to extract image URLs
 - Handle cases where no image is found
@@ -211,20 +226,32 @@ export const getDriverImage = async (driverId, driverName) => {
   // 4. Cache the optimized image
   // 5. Return data URL for display
 }
+
+export const getTeamCarImage = async (teamId, teamName, year) => {
+  // Returns Promise<string | null>
+  // Main function that orchestrates the flow for car images:
+  // 1. Check cache first
+  // 2. If not cached, fetch from Wikimedia
+  // 3. Optimize the image
+  // 4. Cache the optimized image
+  // 5. Return data URL for display or null if unavailable
+}
 ```
 
 **Responsibilities**:
-- Fetch images from Wikimedia via WikimediaService
+- Fetch driver and car images from Wikimedia via WikimediaService
 - Resize images to 440px width using Canvas API
 - Maintain aspect ratio during optimization
 - Store optimized images in browser cache
 - Retrieve cached images when available
 - Update cache when new images are fetched
-- Provide fallback to placeholder on errors
+- Provide fallback to placeholder on errors for driver images
+- Return null for unavailable car images (graceful degradation)
 
 **Caching Strategy**:
 - Use Cache API for storing optimized images
-- Cache key format: `driver-image-${driverId}`
+- Cache key format for drivers: `driver-image-${driverId}`
+- Cache key format for cars: `car-image-${teamId}-${year}`
 - Cache images as Blob objects
 - Implement cache versioning for updates
 - Clear old cache entries when new images fetched
@@ -245,12 +272,15 @@ export const getDriverImage = async (driverId, driverName) => {
   name: string,
   nationality: string,
   team: string,
+  teamId: string, // Unique identifier for the team
+  currentYear: number, // Current or most recent season year
   isWorldChampion: boolean,
   championshipYears: number[], // e.g., [2008, 2014, 2015, 2017, 2018, 2019, 2020]
   currentStanding: number,
   careerPoints: number,
   raceWins: number,
-  imageUrl: string // URL to driver picture from copyright-free source
+  imageUrl: string, // URL to driver picture from copyright-free source
+  teamCarImageUrl: string // Optional URL to racing team car picture
 }
 ```
 
@@ -425,6 +455,26 @@ export const searchDrivers = (drivers, searchQuery) => {
 ### Property 36: Cache usage over re-fetching
 *For any* driver image that exists in the cache, the cached version should be used without re-fetching from Wikimedia.
 **Validates: Requirements 13.5**
+
+### Property 37: Racing team car image display on hover
+*For any* driver card with an available team car image, hovering over the card should display the racing team car image in the expanded view.
+**Validates: Requirements 14.1**
+
+### Property 38: Team car image Wikimedia source
+*For any* racing team car image request, the image should be fetched from Wikimedia sources.
+**Validates: Requirements 14.2**
+
+### Property 39: Team car image optimization dimensions
+*For any* racing team car image fetched from Wikimedia, the optimized version should have a width of 440 pixels while maintaining the original aspect ratio.
+**Validates: Requirements 14.3**
+
+### Property 40: Graceful handling of unavailable car images
+*For any* driver without an available racing team car image, the expanded view should either display a placeholder or omit the car image section without breaking the layout.
+**Validates: Requirements 14.4**
+
+### Property 41: Graceful handling of failed car images
+*For any* racing team car image that fails to load, the system should display a placeholder or gracefully handle the missing image without disrupting the user experience.
+**Validates: Requirements 14.5**
 
 ## Visual Design and Styling
 
@@ -729,6 +779,7 @@ helm-chart/
 - Property 25-30: Row scrolling behavior properties
 - Property 31: Mobile search functionality
 - Property 32-36: Image fetching, optimization, and caching properties
+- Property 37-41: Racing team car image display and handling properties
 
 **Testing Approach**:
 - Generate random driver data with various combinations of properties

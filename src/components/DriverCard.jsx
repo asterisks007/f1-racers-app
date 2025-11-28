@@ -3,7 +3,7 @@ import ButtonBase from '@mui/material/ButtonBase';
 import StandingsDisplay from './StandingsDisplay';
 import ChampionBadge from './ChampionBadge';
 import { isLowEndDevice } from '../utils/deviceDetection';
-import { getDriverImage } from '../services/imageService';
+import { getDriverImage, getTeamCarImage } from '../services/imageService';
 import './DriverCard.css';
 
 const DriverCard = ({ driver }) => {
@@ -12,6 +12,8 @@ const DriverCard = ({ driver }) => {
     name,
     nationality,
     team,
+    teamId,
+    currentYear,
     isWorldChampion,
     championshipYears,
     currentStanding,
@@ -24,8 +26,13 @@ const DriverCard = ({ driver }) => {
   const [isInView, setIsInView] = useState(false);
   const [optimizedImageUrl, setOptimizedImageUrl] = useState(null);
   const [imageLoading, setImageLoading] = useState(false);
+  const [carImageError, setCarImageError] = useState(false);
+  const [optimizedCarImageUrl, setOptimizedCarImageUrl] = useState(null);
+  const [carImageLoading, setCarImageLoading] = useState(false);
+  const [carImageSrc, setCarImageSrc] = useState(null);
   const cardRef = useRef(null);
   const imageRef = useRef(null);
+  const carImageRef = useRef(null);
   const placeholderImage = '/driver-placeholder.svg';
   const reducedAnimations = isLowEndDevice();
 
@@ -54,7 +61,7 @@ const DriverCard = ({ driver }) => {
     };
   }, []);
 
-  // Fetch and optimize image when component mounts
+  // Fetch and optimize driver image when component mounts
   useEffect(() => {
     const fetchOptimizedImage = async () => {
       if (!id || !name) return;
@@ -81,7 +88,34 @@ const DriverCard = ({ driver }) => {
     fetchOptimizedImage();
   }, [id, name, imageUrl]);
 
-  // Load image when in view
+  // Fetch and optimize team car image when component mounts
+  useEffect(() => {
+    const fetchOptimizedCarImage = async () => {
+      if (!teamId || !team || !currentYear) return;
+      
+      setCarImageLoading(true);
+      
+      try {
+        const optimizedUrl = await getTeamCarImage(teamId, team, currentYear);
+        
+        if (optimizedUrl) {
+          setOptimizedCarImageUrl(optimizedUrl);
+        } else {
+          // No car image available - graceful degradation
+          setOptimizedCarImageUrl(null);
+        }
+      } catch (error) {
+        console.error(`Error fetching team car image for ${team} ${currentYear}:`, error);
+        setOptimizedCarImageUrl(null);
+      } finally {
+        setCarImageLoading(false);
+      }
+    };
+    
+    fetchOptimizedCarImage();
+  }, [teamId, team, currentYear]);
+
+  // Load driver image when in view
   useEffect(() => {
     if (isInView && optimizedImageUrl && !imageError) {
       setImageSrc(optimizedImageUrl);
@@ -91,9 +125,21 @@ const DriverCard = ({ driver }) => {
     }
   }, [isInView, optimizedImageUrl, imageError, imageLoading]);
 
+  // Load car image when in view
+  useEffect(() => {
+    if (isInView && optimizedCarImageUrl && !carImageError) {
+      setCarImageSrc(optimizedCarImageUrl);
+    }
+  }, [isInView, optimizedCarImageUrl, carImageError]);
+
   const handleImageError = () => {
     setImageError(true);
     setImageSrc(placeholderImage);
+  };
+
+  const handleCarImageError = () => {
+    setCarImageError(true);
+    setCarImageSrc(null);
   };
 
   const handleTouchStart = (e) => {
@@ -231,6 +277,25 @@ const DriverCard = ({ driver }) => {
 
         {isWorldChampion && (
           <ChampionBadge championshipYears={championshipYears} />
+        )}
+
+        {/* Team Car Image */}
+        {optimizedCarImageUrl && (
+          <div className="team-car-container" ref={carImageRef}>
+            {carImageLoading && !carImageSrc ? (
+              <div className="car-image-loading-placeholder">
+                <div className="loading-spinner"></div>
+              </div>
+            ) : carImageSrc ? (
+              <img 
+                src={carImageSrc}
+                alt={`${team} ${currentYear} F1 car`}
+                className="team-car-image"
+                onError={handleCarImageError}
+                loading="lazy"
+              />
+            ) : null}
+          </div>
         )}
       </div>
     </div>
