@@ -449,15 +449,11 @@ describe('DriverListScreen Unit Tests', () => {
       mockState.error = null;
       mockState.drivers = [];
 
-      const { getByLabelText, getByText } = render(<DriverListScreen />);
+      const { getByLabelText } = render(<DriverListScreen />);
 
-      // Verify loading indicator is displayed
+      // Verify loading indicator is displayed (skeleton screens)
       const loadingIndicator = getByLabelText('Loading drivers');
       expect(loadingIndicator).toBeTruthy();
-
-      // Verify loading text is displayed
-      const loadingText = getByText('Loading drivers...');
-      expect(loadingText).toBeTruthy();
     });
 
     it('should not display driver list when loading', () => {

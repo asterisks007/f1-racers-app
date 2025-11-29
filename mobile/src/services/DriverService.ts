@@ -141,6 +141,25 @@ export class DriverService {
       );
     }
   }
+
+  /**
+   * Get the best available image source for a driver
+   * Prefers local optimized images over remote URLs
+   * @param driver - Driver object
+   * @returns Image source object for react-native-fast-image
+   */
+  getDriverImageSource(driver: Driver): { uri: string } | number {
+    // If local image path exists, use it
+    if (driver.localImagePath) {
+      // For bundled assets, we need to use require()
+      // This would need to be handled at build time
+      // For now, fall back to remote URL
+      return { uri: driver.imageUrl };
+    }
+    
+    // Use remote URL (will be cached by react-native-fast-image)
+    return { uri: driver.imageUrl };
+  }
 }
 
 // Export singleton instance

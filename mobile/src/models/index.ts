@@ -34,8 +34,11 @@ export interface Driver {
   /** Total number of race wins */
   raceWins: number;
   
-  /** URL to the driver's portrait image */
+  /** URL to the driver's portrait image (remote URL) */
   imageUrl: string;
+  
+  /** Optional local path to optimized image (relative to assets folder) */
+  localImagePath?: string;
 }
 
 /**
@@ -108,7 +111,8 @@ export function isDriver(obj: unknown): obj is Driver {
     typeof driver.currentStanding === 'number' &&
     typeof driver.careerPoints === 'number' &&
     typeof driver.raceWins === 'number' &&
-    typeof driver.imageUrl === 'string'
+    typeof driver.imageUrl === 'string' &&
+    (driver.localImagePath === undefined || typeof driver.localImagePath === 'string')
   );
 }
 
@@ -144,6 +148,7 @@ export type DriverJSON = {
   careerPoints: number;
   raceWins: number;
   imageUrl: string;
+  localImagePath?: string;
 };
 
 /**
@@ -161,6 +166,7 @@ export function driverToJSON(driver: Driver): DriverJSON {
     careerPoints: driver.careerPoints,
     raceWins: driver.raceWins,
     imageUrl: driver.imageUrl,
+    localImagePath: driver.localImagePath,
   };
 }
 

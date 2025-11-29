@@ -5,7 +5,11 @@
     "nationality": "Dutch",
     "team": "Red Bull Racing",
     "isWorldChampion": true,
-    "championshipYears": [2021, 2022, 2023],
+    "championshipYears": [
+      2021,
+      2022,
+      2023
+    ],
     "currentStanding": 1,
     "careerPoints": 2586,
     "raceWins": 54,
@@ -29,11 +33,20 @@
     "nationality": "British",
     "team": "Mercedes",
     "isWorldChampion": true,
-    "championshipYears": [2008, 2014, 2015, 2017, 2018, 2019, 2020],
+    "championshipYears": [
+      2008,
+      2014,
+      2015,
+      2017,
+      2018,
+      2019,
+      2020
+    ],
     "currentStanding": 3,
     "careerPoints": 4538,
     "raceWins": 103,
-    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/18/Lewis_Hamilton_2016_Malaysia_2.jpg/440px-Lewis_Hamilton_2016_Malaysia_2.jpg"
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/18/Lewis_Hamilton_2016_Malaysia_2.jpg/440px-Lewis_Hamilton_2016_Malaysia_2.jpg",
+    "localImagePath": "images/drivers/driver-3/Lewis_Hamilton_2016_Malaysia_2@2x.jpg"
   },
   {
     "id": "4",
@@ -41,11 +54,15 @@
     "nationality": "Spanish",
     "team": "Aston Martin",
     "isWorldChampion": true,
-    "championshipYears": [2005, 2006],
+    "championshipYears": [
+      2005,
+      2006
+    ],
     "currentStanding": 4,
     "careerPoints": 2288,
     "raceWins": 32,
-    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2b/Alonso_2016.jpg/440px-Alonso_2016.jpg"
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2b/Alonso_2016.jpg/440px-Alonso_2016.jpg",
+    "localImagePath": "images/drivers/driver-4/Alonso_2016@2x.jpg"
   },
   {
     "id": "5",
@@ -125,7 +142,12 @@
     "nationality": "German",
     "team": "Aston Martin",
     "isWorldChampion": true,
-    "championshipYears": [2010, 2011, 2012, 2013],
+    "championshipYears": [
+      2010,
+      2011,
+      2012,
+      2013
+    ],
     "currentStanding": 14,
     "careerPoints": 3098,
     "raceWins": 53,
@@ -137,7 +159,15 @@
     "nationality": "German",
     "team": "Ferrari",
     "isWorldChampion": true,
-    "championshipYears": [1994, 1995, 2000, 2001, 2002, 2003, 2004],
+    "championshipYears": [
+      1994,
+      1995,
+      2000,
+      2001,
+      2002,
+      2003,
+      2004
+    ],
     "currentStanding": 0,
     "careerPoints": 1566,
     "raceWins": 91,
@@ -149,7 +179,11 @@
     "nationality": "Brazilian",
     "team": "Williams",
     "isWorldChampion": true,
-    "championshipYears": [1988, 1990, 1991],
+    "championshipYears": [
+      1988,
+      1990,
+      1991
+    ],
     "currentStanding": 0,
     "careerPoints": 614,
     "raceWins": 41,
@@ -161,7 +195,12 @@
     "nationality": "French",
     "team": "Williams",
     "isWorldChampion": true,
-    "championshipYears": [1985, 1986, 1989, 1993],
+    "championshipYears": [
+      1985,
+      1986,
+      1989,
+      1993
+    ],
     "currentStanding": 0,
     "careerPoints": 798,
     "raceWins": 51,
@@ -173,7 +212,9 @@
     "nationality": "German",
     "team": "Mercedes",
     "isWorldChampion": true,
-    "championshipYears": [2016],
+    "championshipYears": [
+      2016
+    ],
     "currentStanding": 0,
     "careerPoints": 1594,
     "raceWins": 23,
@@ -185,7 +226,9 @@
     "nationality": "Finnish",
     "team": "Alfa Romeo",
     "isWorldChampion": true,
-    "championshipYears": [2007],
+    "championshipYears": [
+      2007
+    ],
     "currentStanding": 0,
     "careerPoints": 1873,
     "raceWins": 21,
@@ -197,7 +240,9 @@
     "nationality": "British",
     "team": "McLaren",
     "isWorldChampion": true,
-    "championshipYears": [2009],
+    "championshipYears": [
+      2009
+    ],
     "currentStanding": 0,
     "careerPoints": 1235,
     "raceWins": 15,
@@ -209,7 +254,10 @@
     "nationality": "Finnish",
     "team": "McLaren",
     "isWorldChampion": true,
-    "championshipYears": [1998, 1999],
+    "championshipYears": [
+      1998,
+      1999
+    ],
     "currentStanding": 0,
     "careerPoints": 420,
     "raceWins": 20,

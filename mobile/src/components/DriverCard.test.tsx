@@ -104,9 +104,9 @@ describe('DriverCard Property Tests', () => {
 
             // Standing should be displayed
             if (testDriver.currentStanding > 0) {
-              expect(getByLabelText(`Current standing: ${testDriver.currentStanding}`)).toBeTruthy();
+              expect(getByLabelText(`Current standing: position ${testDriver.currentStanding}`)).toBeTruthy();
             } else {
-              expect(getByLabelText('Current standing: Not ranked')).toBeTruthy();
+              expect(getByLabelText('Not currently ranked')).toBeTruthy();
             }
           }
         ),
@@ -136,7 +136,7 @@ describe('DriverCard Property Tests', () => {
             expect(getByLabelText(`Team: ${testDriver.team}`)).toBeTruthy();
 
             // Zero standing should be displayed as "-"
-            expect(getByLabelText('Current standing: Not ranked')).toBeTruthy();
+            expect(getByLabelText('Not currently ranked')).toBeTruthy();
           }
         ),
         { numRuns: 100 }

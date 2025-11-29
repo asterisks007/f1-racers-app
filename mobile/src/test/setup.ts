@@ -12,6 +12,7 @@ jest.mock('react-native-gesture-handler', () => {
   };
   
   return {
+    GestureHandlerRootView: mockComponent('GestureHandlerRootView'),
     Swipeable: mockComponent('Swipeable'),
     DrawerLayout: mockComponent('DrawerLayout'),
     State: {},
